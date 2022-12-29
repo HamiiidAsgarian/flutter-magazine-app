@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:project3/widgets.dart';
@@ -23,11 +24,26 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animCntrl1;
+
+  late Animation _pageChangeAnim;
+
+  @override
+  void initState() {
+    _animCntrl1 = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 400));
+
+    _pageChangeAnim = Tween<double>(begin: 0, end: 300)
+        .animate(CurvedAnimation(parent: _animCntrl1, curve: Curves.linear));
+    super.initState();
+  }
+
   static const double _cardWith = 350;
   static const double _cardHeight = 500;
   final List<Widget> _items = [
-    FlutterLogo(
+    const FlutterLogo(
       size: 900,
     ),
     Container(
@@ -61,20 +77,63 @@ class _HomeScreenState extends State<HomeScreen> {
       child: const Text("7"),
     ),
   ];
+  bool test = false;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+              test ? Colors.red : Colors.greenAccent,
+              Colors.white,
+            ])),
+        child: Column(
+          children: [
+            FloatingActionButton(onPressed: () {
+              setState(() {
+                test = !test;
+              });
+            }),
+            Center(
+              child: MyCustomCards(
+                items: _items,
+                onTap: (status) {
+                  Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: ((context, animation, secondaryAnimation) {
+                          return const Page2();
+                        }),
+                        transitionDuration: const Duration(seconds: 1),
+                        reverseTransitionDuration: Duration.zero,
+                      ));
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Page2 extends StatelessWidget {
+  const Page2({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: MyCustomCards(
-            items: _items,
-            currentIndex: (currentIndex) {
-              print(currentIndex);
-            },
-            leftOrRightResult: (MyCardsDragDirection dragDirection) {
-              print(dragDirection);
-            }),
-      ),
+      body: Align(
+          alignment: Alignment.topCenter,
+          child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Hero(tag: "Hero1", child: FlutterLogo(size: 200)))),
     );
   }
 }

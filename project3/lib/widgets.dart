@@ -4,16 +4,20 @@ import 'package:flutter/material.dart';
 
 import 'dart:developer' as developer;
 
+enum CardsSelectionStatus { selected, unSelected }
+
 class MyCustomCards extends StatefulWidget {
   const MyCustomCards(
       {super.key,
       this.items = const [],
       this.currentIndex,
+      this.onTap,
       this.leftOrRightResult});
 
   final List<Widget> items;
   final Function(MyCardsDragDirection)? leftOrRightResult;
   final Function(int)? currentIndex;
+  final Function(CardsSelectionStatus)? onTap;
 
   @override
   State<MyCustomCards> createState() => _MyCustomCardsState();
@@ -105,6 +109,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
       100; // distance(left ot right) from center of the cart to start skip(next) animation
 
   int currentIndex = 1;
+  bool _isSelected = false;
 
   //  _items = [
   //   FlutterLogo(
@@ -150,7 +155,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
         width: _cardWith,
         height: _cardHeight,
         child: Stack(
-          children: [...cardsGenerator()],
+          children: cardsGenerator(),
         ),
       ),
     );
@@ -161,34 +166,45 @@ class _MyCustomCardsState extends State<MyCustomCards>
     for (int i = 2; i >= 0; i--) {
       //The card on the top
       if (i == 0) {
-        cardsStack.add(GestureDetector(
-          onPanDown: (details) {
-            onPanDown(details);
-          },
-          onPanUpdate: ((details) {
-            onPanUpdate(details);
-          }),
-          onPanEnd: (details) {
-            onPanEnd();
-          },
-          onTap: (() async {}),
-          child: AnimatedBuilder(
-              animation:
-                  Listenable.merge([_returnToPositionCntrl, _cardsChangeAnim]),
-              builder: (context, child) {
-                return Transform.translate(
-                  offset:
-                      _returnToPositionCntrl.status == AnimationStatus.forward
-                          ? _returnToOfssetPositionAnim.value
-                          : Offset(_updateDx, _updateDy),
-                  child: Transform.rotate(
-                    origin: const Offset(0,
-                        _cardHeight), //Pivot point to the center button of the cards
-                    angle: _rotateAnim.value,
-                    child: _items[i],
-                  ),
-                );
-              }),
+        cardsStack.add(Hero(
+          tag: "Hero1",
+          child: GestureDetector(
+            onTapUp: (details) async {
+              onTapUp();
+            },
+            onPanDown: (details) {
+              if (!_isSelected) {
+                onPanDown(details);
+              }
+            },
+            onPanUpdate: ((details) {
+              if (!_isSelected) {
+                onPanUpdate(details);
+              }
+            }),
+            onPanEnd: (details) {
+              if (!_isSelected) {
+                onPanEnd();
+              }
+            },
+            child: AnimatedBuilder(
+                animation: Listenable.merge(
+                    [_returnToPositionCntrl, _cardsChangeAnim]),
+                builder: (context, child) {
+                  return Transform.translate(
+                    offset:
+                        _returnToPositionCntrl.status == AnimationStatus.forward
+                            ? _returnToOfssetPositionAnim.value
+                            : Offset(_updateDx, _updateDy),
+                    child: Transform.rotate(
+                      origin: const Offset(0,
+                          _cardHeight), //Pivot point to the center button of the cards
+                      angle: _rotateAnim.value,
+                      child: _items[i],
+                    ),
+                  );
+                }),
+          ),
         ));
       } else {
         //Cards NOT on the top
@@ -288,12 +304,60 @@ class _MyCustomCardsState extends State<MyCustomCards>
       _returnToOfssetPositionAnim = Tween<Offset>(
               begin: Offset(_updateDx, _updateDy), end: const Offset(0, 0))
           .animate(CurvedAnimation(
-              parent: _returnToPositionCntrl, curve: Curves.easeInOut));
+              parent: _returnToPositionCntrl, curve: Curves.easeInOutBack));
       _returnToPositionCntrl.forward();
 
       setState(() {});
       _updateDy = 0;
       _updateDx = 0;
+    }
+  }
+
+  onTapUp() async {
+//For grouping cards together when they become selected
+    if (!_isSelected) {
+      _isSelected = true;
+      if (widget.onTap != null) {
+        widget.onTap!(CardsSelectionStatus.selected);
+      }
+      _cardsChangeAnim.reset();
+      setState(() {
+        _isSelected = true;
+        _rotateAnim = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(
+            parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+        _rotateAnim1 = Tween<double>(begin: -(pi / 7), end: 0).animate(
+            CurvedAnimation(
+                parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+        _rotateAnim2 = Tween<double>(begin: (pi / 7), end: 0).animate(
+            CurvedAnimation(
+                parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+        _rotateAnim3 = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(
+            parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+      });
+
+      _rotateAnims = [_rotateAnim, _rotateAnim1, _rotateAnim2, _rotateAnim3];
+
+      await _cardsChangeAnim.forward();
+    } else {
+      await _cardsChangeAnim.reverse();
+
+      setState(() {
+        _rotateAnim = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(
+            parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+        _rotateAnim1 = Tween<double>(begin: -(pi / 7), end: 0).animate(
+            CurvedAnimation(
+                parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+        _rotateAnim2 = Tween<double>(begin: (pi / 7), end: -(pi / 7)).animate(
+            CurvedAnimation(
+                parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+        _rotateAnim3 = Tween<double>(begin: 0, end: (pi / 7)).animate(
+            CurvedAnimation(
+                parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+
+        _rotateAnims = [_rotateAnim, _rotateAnim1, _rotateAnim2, _rotateAnim3];
+
+        _isSelected = false;
+      });
     }
   }
 }
