@@ -1,7 +1,8 @@
-import 'dart:math';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:project3/page2.dart';
 import 'package:project3/widgets.dart';
 
 main() {
@@ -13,7 +14,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: HomeScreen());
+    return MaterialApp(
+        home: Page2(
+      selectedItem:
+          Container(width: 200, height: 400, color: Colors.pinkAccent),
+    ));
   }
 }
 
@@ -26,69 +31,98 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animCntrl1;
+  static const List myColors = [
+    Colors.redAccent,
+    Colors.greenAccent,
+    Colors.pinkAccent,
+    Colors.blueAccent
+  ];
 
-  late Animation _pageChangeAnim;
+  // late AnimationController _animCntrl1;
+
+  // late Animation _pageChangeAnim;
 
   @override
   void initState() {
-    _animCntrl1 = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 400));
+    // _animCntrl1 = AnimationController(
+    //     vsync: this, duration: const Duration(milliseconds: 400));
 
-    _pageChangeAnim = Tween<double>(begin: 0, end: 300)
-        .animate(CurvedAnimation(parent: _animCntrl1, curve: Curves.linear));
+    // _pageChangeAnim = Tween<double>(begin: 0, end: 300)
+    //     .animate(CurvedAnimation(parent: _animCntrl1, curve: Curves.linear));
     super.initState();
   }
 
-  static const double _cardWith = 350;
-  static const double _cardHeight = 500;
-  final List<Widget> _items = [
-    const FlutterLogo(
-      size: 900,
-    ),
-    Container(
-      color: Colors.blue,
-      width: 800,
-      height: 900,
-      child: const Text("3"),
-    ),
-    Container(
-      color: Colors.pinkAccent,
-      width: _cardWith,
-      height: _cardHeight,
-      child: const Text("4"),
-    ),
-    Container(
-      color: Colors.brown,
-      width: _cardWith,
-      height: _cardHeight,
-      child: const Text("5"),
-    ),
-    Container(
-      color: Colors.lightBlue,
-      width: _cardWith,
-      height: _cardHeight,
-      child: const Text("6"),
-    ),
-    Container(
-      color: Colors.limeAccent,
-      width: _cardWith,
-      height: _cardHeight,
-      child: const Text("7"),
-    ),
-  ];
+  static const double _cardWith = 400;
+  static const double _cardHeight = 400;
+
   bool test = false;
+  int _selectedIndex = 1;
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _items = [
+      ClipRRect(
+        borderRadius: BorderRadius.circular(50),
+        child: Container(
+          color: myColors[0],
+          width: _cardWith,
+          height: _cardHeight,
+          child: Image.asset("assets/images/1.png"),
+        ),
+      ),
+      ClipRRect(
+        borderRadius: BorderRadius.circular(50),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          child: Container(
+            color: myColors[1],
+            width: _cardWith,
+            height: _cardHeight,
+            child: Image.asset("assets/images/10.png"),
+          ),
+        ),
+      ),
+      ClipRRect(
+        borderRadius: BorderRadius.circular(50),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          child: Container(
+            color: myColors[2],
+            width: _cardWith,
+            height: _cardHeight,
+            child: Image.asset("assets/images/9.gif"),
+          ),
+        ),
+      ),
+      ClipRRect(
+        borderRadius: BorderRadius.circular(50),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          child: Container(
+            color: Colors.white.withOpacity(0.5),
+            width: _cardWith,
+            height: _cardHeight,
+            child: Image.asset("assets/images/8.png"),
+          ),
+        ),
+      ),
+      Container(
+        color: Colors.limeAccent,
+        width: _cardWith,
+        height: _cardHeight,
+        child: const Text("7"),
+      ),
+    ];
+
+    log("bild");
     return Scaffold(
       body: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-              test ? Colors.red : Colors.greenAccent,
+              myColors[_selectedIndex - 1],
               Colors.white,
             ])),
         child: Column(
@@ -100,13 +134,19 @@ class _HomeScreenState extends State<HomeScreen>
             }),
             Center(
               child: MyCustomCards(
+                currentIndex: (p0) {
+                  print(p0);
+                  setState(() {
+                    _selectedIndex = p0;
+                  });
+                },
                 items: _items,
                 onTap: (status) {
                   Navigator.push(
                       context,
                       PageRouteBuilder(
                         pageBuilder: ((context, animation, secondaryAnimation) {
-                          return const Page2();
+                          return Page2(selectedItem: _items[_selectedIndex]);
                         }),
                         transitionDuration: const Duration(seconds: 1),
                         reverseTransitionDuration: Duration.zero,
@@ -117,23 +157,6 @@ class _HomeScreenState extends State<HomeScreen>
           ],
         ),
       ),
-    );
-  }
-}
-
-class Page2 extends StatelessWidget {
-  const Page2({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Align(
-          alignment: Alignment.topCenter,
-          child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Hero(tag: "Hero1", child: FlutterLogo(size: 200)))),
     );
   }
 }
