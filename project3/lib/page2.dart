@@ -76,16 +76,16 @@ class _MyCarousel2State extends State<MyCarousel2>
         height: 400,
         color: Colors.lightGreenAccent,
         child: const Text("2")),
-    // Container(
-    //     width: 400,
-    //     height: 400,
-    //     color: Colors.blueAccent,
-    //     child: const Text("2")),
-    // Container(
-    //     width: 400,
-    //     height: 400,
-    //     color: Colors.yellowAccent,
-    //     child: const Text("2")),
+    Container(
+        width: 400,
+        height: 400,
+        color: Colors.blueAccent,
+        child: const Text("2")),
+    Container(
+        width: 400,
+        height: 400,
+        color: Colors.yellowAccent,
+        child: const Text("2")),
   ];
 
   @override
@@ -121,7 +121,10 @@ class _MyCarousel2State extends State<MyCarousel2>
               await _mainAnimCntrl.forward();
               _mainAnimCntrl.reset();
               setState(() {
-                rawItems = rawItems.reversed.toList();
+                Widget temp = rawItems.last;
+
+                rawItems.removeLast();
+                rawItems.insert(0, temp);
               });
             }),
             FloatingActionButton(onPressed: () async {
@@ -149,7 +152,10 @@ class _MyCarousel2State extends State<MyCarousel2>
               await _mainAnimCntrl.forward();
               _mainAnimCntrl.reset();
               setState(() {
-                rawItems = rawItems.reversed.toList();
+                Widget temp = rawItems.last;
+
+                rawItems.removeLast();
+                rawItems.insert(0, temp);
               });
             }),
           ]),
