@@ -4,17 +4,21 @@ import 'package:flutter/material.dart';
 
 import 'dart:developer' as developer;
 
+import 'package:project3/item_class.dart';
+
 enum CardsSelectionStatus { selected, unSelected }
 
 class MyCustomCards extends StatefulWidget {
   const MyCustomCards(
       {super.key,
       this.items = const [],
+      this.itemss = const [],
       this.currentIndex,
       this.onTap,
       this.leftOrRightResult});
 
   final List<Widget> items;
+  final List<MyCardItem> itemss;
   final Function(MyCardsDragDirection)? leftOrRightResult;
   final Function(int)? currentIndex;
   final Function(CardsSelectionStatus)? onTap;
@@ -43,7 +47,8 @@ class _MyCustomCardsState extends State<MyCustomCards>
   late List<Animation<double>> _translateAnims;
   late List<Animation<double>> _rotateAnims;
 
-  late List<Widget> _items;
+  // late List<Widget> _items;
+  late List<Widget> _widgetedItems;
 
   @override
   void initState() {
@@ -83,7 +88,23 @@ class _MyCustomCardsState extends State<MyCustomCards>
     ];
     _rotateAnims = [_rotateAnim, _rotateAnim1, _rotateAnim2, _rotateAnim3];
 
-    _items = widget.items;
+    _widgetedItems = widget.items;
+
+    // _widgetedItems = widget.itemss
+    //     .map(
+    //       (e) => ClipRRect(
+    //         borderRadius: BorderRadius.circular(50),
+    //         child: Container(
+    //           // color: myColors[0],
+    //           width: _cardWith,
+    //           height: _cardHeight,
+    //           child: Stack(children: [
+    //             Image.asset(e.fullImage ?? ""),
+    //           ]),
+    //         ),
+    //       ),
+    //     )
+    //     .toList();
 
     super.initState();
   }
@@ -111,49 +132,14 @@ class _MyCustomCardsState extends State<MyCustomCards>
   int currentIndex = 1;
   bool _isSelected = false;
 
-  //  _items = [
-  //   FlutterLogo(
-  //     size: 200,
-  //   ),
-  //   Container(
-  //     color: Colors.blue,
-  //     width: _cardWith,
-  //     height: _cardHeight,
-  //     child: const Text("3"),
-  //   ),
-  //   Container(
-  //     color: Colors.pinkAccent,
-  //     width: _cardWith,
-  //     height: _cardHeight,
-  //     child: const Text("4"),
-  //   ),
-  //   Container(
-  //     color: Colors.brown,
-  //     width: _cardWith,
-  //     height: _cardHeight,
-  //     child: const Text("5"),
-  //   ),
-  //   Container(
-  //     color: Colors.lightBlue,
-  //     width: _cardWith,
-  //     height: _cardHeight,
-  //     child: const Text("6"),
-  //   ),
-  //   Container(
-  //     color: Colors.limeAccent,
-  //     width: _cardWith,
-  //     height: _cardHeight,
-  //     child: const Text("7"),
-  //   ),
-  // ];
-
   @override
   Widget build(BuildContext context) {
     developer.log("***MyCustomCards Buid***");
-    return Center(
-      child: SizedBox(
-        width: _cardWith,
-        height: _cardHeight,
+    return SizedBox(
+      // color: Colors.teal,
+      // width: _cardWith,
+      // height: _cardHeight,
+      child: Center(
         child: Stack(
           children: cardsGenerator(),
         ),
@@ -200,7 +186,31 @@ class _MyCustomCardsState extends State<MyCustomCards>
                       origin: const Offset(0,
                           _cardHeight), //Pivot point to the center button of the cards
                       angle: _rotateAnim.value,
-                      child: _items[i],
+                      child: Container(
+                          // color: Colors.pink,
+                          child: Stack(children: [
+                        _widgetedItems[i],
+                        Positioned.fill(
+                          child: Center(
+                            child: Transform.translate(
+                                offset: Offset(_updateDx / 4, _updateDy / 4),
+                                child: Center(
+                                    child: Image.asset(
+                                        widget.itemss[i].foregroundImageUrl ??
+                                            ""))),
+                          ),
+                        ),
+                        Positioned.fill(
+                          child: Center(
+                            child: Transform.translate(
+                                offset: Offset(_updateDx / 2, _updateDy / 2),
+                                child: Center(
+                                    child: Image.asset(
+                                        widget.itemss[i].topGroundImageUrl ??
+                                            ""))),
+                          ),
+                        ),
+                      ])),
                     ),
                   );
                 }),
@@ -215,12 +225,12 @@ class _MyCustomCardsState extends State<MyCustomCards>
               child: Transform.rotate(
                 origin: const Offset(0, 200),
                 angle: _rotateAnims[i].value,
-                child: _items[i],
+                child: _widgetedItems[i],
               )),
         ));
       }
     }
-    //The top card that appears on the buttom of the stack- there is always a static item more than actual items to help the flow of the animations
+    //The former top card that appears on the buttom of the stack- there is always a static item more than actual items to help the flow of the animations
     cardsStack.insert(
         0,
         AnimatedBuilder(
@@ -230,7 +240,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
               child: Transform.rotate(
                 origin: const Offset(0, 200),
                 angle: _rotateAnims[3].value,
-                child: _items[
+                child: _widgetedItems[
                     3], // 3 means that the 3rd item must be shown as the new element at the buttom of the stack - becase list gest updated through deleting fitst element and adding to the end of the list, the 3rd item can always considered as the last stack item
               )),
         ));
@@ -261,7 +271,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
       if (widget.leftOrRightResult != null) {
         widget.leftOrRightResult!(MyCardsDragDirection.right);
       }
-      currentIndex = (currentIndex % _items.length) + 1;
+      currentIndex = (currentIndex % _widgetedItems.length) + 1;
       if (widget.currentIndex != null) {
         widget.currentIndex!(currentIndex);
       }
@@ -273,7 +283,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
       if (widget.leftOrRightResult != null) {
         widget.leftOrRightResult!(MyCardsDragDirection.left);
       }
-      currentIndex = (currentIndex % _items.length) + 1;
+      currentIndex = (currentIndex % _widgetedItems.length) + 1;
       if (widget.currentIndex != null) {
         widget.currentIndex!(currentIndex);
       }
@@ -290,9 +300,9 @@ class _MyCustomCardsState extends State<MyCustomCards>
         _updateDy = 0;
         _updateDx = 0;
 
-        var temp = _items.first;
-        _items.removeAt(0);
-        _items.add(temp);
+        var temp = _widgetedItems.first;
+        _widgetedItems.removeAt(0);
+        _widgetedItems.add(temp);
 
         _cardsChangeAnim.reset();
       });

@@ -1,13 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:project3/item_class.dart';
 import 'package:project3/page2.dart';
 import 'package:project3/widgets.dart';
 
 import 'dart:developer';
 
 class Carousel1 extends StatefulWidget {
-  const Carousel1({super.key});
+  const Carousel1({required this.items, super.key});
+
+  final List<MyCardItem> items;
 
   @override
   State<Carousel1> createState() => _Carousel1State();
@@ -15,13 +18,13 @@ class Carousel1 extends StatefulWidget {
 
 class _Carousel1State extends State<Carousel1>
     with SingleTickerProviderStateMixin {
-  static const List myColors = [
-    Colors.redAccent,
-    Colors.greenAccent,
-    Colors.pinkAccent,
-    Colors.blueAccent,
-    Colors.blueAccent
-  ];
+  // static final List myColors = [
+  //   Colors.white.withOpacity(0),
+  //   Colors.white.withOpacity(0),
+  //   Colors.white.withOpacity(0),
+  //   Colors.white.withOpacity(0),
+  //   Colors.white.withOpacity(0),
+  // ];
 
   // late AnimationController _animCntrl1;
 
@@ -44,100 +47,44 @@ class _Carousel1State extends State<Carousel1>
   int _selectedIndex = 1;
   @override
   Widget build(BuildContext context) {
-    final List<Widget> items = [
-      ClipRRect(
-        borderRadius: BorderRadius.circular(50),
-        child: Container(
-          color: myColors[0],
-          width: _cardWith,
-          height: _cardHeight,
-          child: Image.asset("assets/images/1.png"),
-        ),
-      ),
-      ClipRRect(
-        borderRadius: BorderRadius.circular(50),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-          child: Container(
-            color: myColors[1],
-            width: _cardWith,
-            height: _cardHeight,
-            child: Image.asset("assets/images/2.png"),
+    final List<Widget> widgetedItems = widget.items
+        .map(
+          (e) => ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Container(
+              // color: myColors[0],
+              width: _cardWith,
+              height: _cardHeight,
+              child: Stack(children: [
+                Image.asset(e.backgroundImageUrl ?? ""),
+              ]),
+            ),
           ),
-        ),
-      ),
-      ClipRRect(
-        borderRadius: BorderRadius.circular(50),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-          child: Container(
-            color: myColors[2],
-            width: _cardWith,
-            height: _cardHeight,
-            child: Image.asset("assets/images/3.png"),
-          ),
-        ),
-      ),
-      ClipRRect(
-        borderRadius: BorderRadius.circular(50),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-          child: Container(
-            color: Colors.white.withOpacity(0.5),
-            width: _cardWith,
-            height: _cardHeight,
-            child: Image.asset("assets/images/4.png"),
-          ),
-        ),
-      ),
-      Container(
-        color: Colors.limeAccent,
-        width: _cardWith,
-        height: _cardHeight,
-        child: Image.asset("assets/images/4.png"),
-      ),
-    ];
+        )
+        .toList();
 
     log("bild");
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-            myColors[_selectedIndex - 1],
-            Colors.white,
-          ])),
-      child: Column(
-        children: [
-          FloatingActionButton(onPressed: () {
-            setState(() {
-              test = !test;
-            });
-          }),
-          Center(
-            child: MyCustomCards(
-              currentIndex: (p0) {
-                setState(() {
-                  _selectedIndex = p0;
-                });
-              },
-              items: items,
-              onTap: (status) {
-                Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: ((context, animation, secondaryAnimation) {
-                        return Page2(selectedItem: items[_selectedIndex]);
-                      }),
-                      transitionDuration: const Duration(seconds: 1),
-                      reverseTransitionDuration: Duration.zero,
-                    ));
-              },
-            ),
-          ),
-        ],
+      child: MyCustomCards(
+        itemss: widget.items,
+        currentIndex: (p0) {
+          setState(() {
+            _selectedIndex = p0;
+          });
+        },
+        items: widgetedItems,
+        onTap: (status) {
+          Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: ((context, animation, secondaryAnimation) {
+                  return Page2(selectedItem: widgetedItems[_selectedIndex]);
+                }),
+                transitionDuration: const Duration(seconds: 1),
+                reverseTransitionDuration: Duration.zero,
+              ));
+        },
       ),
     );
   }
