@@ -172,25 +172,17 @@ class _MyCustomCardsState extends State<MyCustomCards>
                 animation: Listenable.merge(
                     [_returnToPositionCntrl, _cardsChangeAnim]),
                 builder: (context, child) {
-                  return Transform.translate(
-                    offset:
+                  return DynamicCardOnTop(
+                    data: _itemsStackCardOrder[i],
+                    cardWith: _cardWith,
+                    cardHeight: _cardHeight,
+                    dxPosition: _updateDx,
+                    dyPosition: _updateDy,
+                    translateOffset:
                         _returnToPositionCntrl.status == AnimationStatus.forward
                             ? _returnToOfssetPositionAnim.value
                             : Offset(_updateDx, _updateDy),
-                    child: Transform.rotate(
-                      origin: const Offset(0,
-                          _cardHeight), //Pivot point to the center button of the cards
-                      angle: _rotateAnim.value,
-                      child: DynamicCard(
-                        itemsStackCardOrder: _itemsStackCardOrder,
-                        index: i,
-                        cardWith: _cardWith,
-                        cardHeight: _cardHeight,
-                        data: widget,
-                        updateDx: _updateDx,
-                        updateDy: _updateDy,
-                      ),
-                    ),
+                    rotateAngle: _rotateAnim.value,
                   );
                 }),
           ),
@@ -199,18 +191,13 @@ class _MyCustomCardsState extends State<MyCustomCards>
         //Cards NOT on the top
         cardsStack.add(AnimatedBuilder(
           animation: _cardsChangeAnim,
-          builder: (context, child) => Transform.scale(
-              scale: _translateAnims[i].value,
-              child: Transform.rotate(
-                origin: const Offset(0, 200),
-                angle: _rotateAnims[i].value,
-                child: SizedBox(
-                  // color: Colors.green,
-                  width: _cardWith,
-                  height: _cardHeight,
-                  child: Image.asset(_itemsStackCardOrder[i].fullImage ?? ""),
-                ),
-              )),
+          builder: (context, child) => DynamicCardNotOnTop(
+            data: _itemsStackCardOrder[i],
+            cardWith: _cardWith,
+            cardHeight: _cardHeight,
+            scaleValue: _translateAnims[i].value,
+            rotateValue: _rotateAnims[i].value,
+          ),
         ));
       }
     }
@@ -219,18 +206,13 @@ class _MyCustomCardsState extends State<MyCustomCards>
         0,
         AnimatedBuilder(
           animation: _cardsChangeAnim,
-          builder: (context, child) => Transform.scale(
-              scale: _translateAnims[3].value,
-              child: Transform.rotate(
-                origin: const Offset(0, 200),
-                angle: _rotateAnims[3].value,
-                child: SizedBox(
-                  // color: Colors.green,
-                  width: _cardWith,
-                  height: _cardHeight,
-                  child: Image.asset(_itemsStackCardOrder[3].fullImage ?? ""),
-                ), // 3 means that the 3rd item must be shown as the new element at the buttom of the stack - becase list gest updated through deleting fitst element and adding to the end of the list, the 3rd item can always considered as the last stack item
-              )),
+          builder: (context, child) => DynamicCardNotOnTop(
+            data: _itemsStackCardOrder[3],
+            cardWith: _cardWith,
+            cardHeight: _cardHeight,
+            scaleValue: _translateAnims[3].value,
+            rotateValue: _rotateAnims[3].value,
+          ),
         ));
     return cardsStack;
   }
@@ -294,15 +276,13 @@ class _MyCustomCardsState extends State<MyCustomCards>
 
         _cardsChangeAnim.reset();
       });
-
-      // currentIndex++;
     } else {
       _returnToPositionCntrl.reset();
 
       _returnToOfssetPositionAnim = Tween<Offset>(
               begin: Offset(_updateDx, _updateDy), end: const Offset(0, 0))
           .animate(CurvedAnimation(
-              parent: _returnToPositionCntrl, curve: Curves.easeInOutBack));
+              parent: _returnToPositionCntrl, curve: Curves.easeOutBack));
       _returnToPositionCntrl.forward();
 
       setState(() {});
@@ -360,66 +340,136 @@ class _MyCustomCardsState extends State<MyCustomCards>
   }
 }
 
-class DynamicCard extends StatelessWidget {
-  const DynamicCard({
+class DynamicCardNotOnTop extends StatelessWidget {
+  const DynamicCardNotOnTop({
     Key? key,
-    required List<MyCardItem> itemsStackCardOrder,
-    required this.index,
+    required double scaleValue,
+    required double rotateValue,
     required double cardWith,
     required double cardHeight,
-    required this.data,
-    required double updateDx,
-    required double updateDy,
-  })  : _itemsStackCardOrder = itemsStackCardOrder,
+    required MyCardItem data,
+  })  : _scaleValue = scaleValue,
+        _rotateValue = rotateValue,
         _cardWith = cardWith,
         _cardHeight = cardHeight,
-        _updateDx = updateDx,
-        _updateDy = updateDy,
+        _data = data,
         super(key: key);
 
-  final List<MyCardItem> _itemsStackCardOrder;
-  final int index;
+  final double _scaleValue;
+  final double _rotateValue;
   final double _cardWith;
   final double _cardHeight;
-  final MyCustomCards data;
-  final double _updateDx;
-  final double _updateDy;
+  final MyCardItem _data;
+
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      _itemsStackCardOrder[index].backgroundImageUrl != ""
-          ? SizedBox(
-              // color: Colors.green,
-              width: _cardWith,
-              height: _cardHeight,
-              child: Image.asset(
-                  _itemsStackCardOrder[index].backgroundImageUrl ?? ""),
-            )
-          : const SizedBox(),
-      // _widgetedItems[i],
-      data.itemss[index].foregroundImageUrl != ""
-          ? Positioned.fill(
-              child: Center(
-                child: Transform.translate(
-                    offset: Offset(_updateDx / 4, _updateDy / 4),
-                    child: Center(
-                        child: Image.asset(
-                            data.itemss[index].foregroundImageUrl ?? ""))),
-              ),
-            )
-          : const SizedBox(),
+    return Transform.scale(
+        scale: _scaleValue,
+        child: Transform.rotate(
+            origin: const Offset(0, 200),
+            angle: _rotateValue,
+            child: Stack(children: [
+              _data.backgroundImageUrl != ""
+                  ? SizedBox(
+                      // color: Colors.green,
+                      width: _cardWith,
+                      height: _cardHeight,
+                      child: Image.asset(_data.backgroundImageUrl ?? ""),
+                    )
+                  : const SizedBox(),
+              // _widgetedItems[i],
+              _data.foregroundImageUrl != ""
+                  ? Positioned.fill(
+                      child: Image.asset(_data.foregroundImageUrl ?? ""),
+                    )
+                  : const SizedBox(),
 
-      data.itemss[index].topGroundImageUrl != ""
-          ? Positioned.fill(
-              child: Center(
-                child: Transform.translate(
-                    offset: Offset(_updateDx / 2, _updateDy / 2),
-                    child: Image.asset(
-                        data.itemss[index].topGroundImageUrl ?? "")),
-              ),
-            )
-          : const SizedBox(),
-    ]);
+              _data.topGroundImageUrl != ""
+                  ? Positioned.fill(
+                      child: Image.asset(_data.topGroundImageUrl ?? ""),
+                    )
+                  : const SizedBox(),
+            ])
+
+            // SizedBox(
+            //   // color: Colors.green,
+            //   width: _cardWith,
+            //   height: _cardHeight,
+            //   child: Image.asset(_data.fullImage ?? ""),
+            // ),
+            ));
+  }
+}
+
+class DynamicCardOnTop extends StatelessWidget {
+  const DynamicCardOnTop({
+    Key? key,
+    required MyCardItem data,
+    required double cardWith,
+    required double cardHeight,
+    required double dxPosition,
+    required double dyPosition,
+    required Offset translateOffset,
+    required double rotateAngle,
+  })  : _cardWith = cardWith,
+        _cardHeight = cardHeight,
+        _updateDx = dxPosition,
+        _updateDy = dyPosition,
+        _translateOffset = translateOffset,
+        _rotateAngle = rotateAngle,
+        _data = data,
+        super(key: key);
+
+  final double _cardWith;
+  final double _cardHeight;
+  final MyCardItem _data;
+  final double _updateDx;
+  final double _updateDy;
+
+  final Offset _translateOffset;
+  final double _rotateAngle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      offset: _translateOffset,
+      child: Transform.rotate(
+          origin: Offset(
+              0, _cardHeight), //Pivot point to the center button of the cards
+          angle: _rotateAngle,
+          child: Stack(children: [
+            _data.backgroundImageUrl != ""
+                ? SizedBox(
+                    // color: Colors.green,
+                    width: _cardWith,
+                    height: _cardHeight,
+                    child: Image.asset(_data.backgroundImageUrl ?? ""),
+                  )
+                : const SizedBox(),
+            // _widgetedItems[i],
+            _data.foregroundImageUrl != ""
+                ? Positioned.fill(
+                    child: Center(
+                      child: Transform.translate(
+                          offset: Offset(_updateDx / 4, _updateDy / 4),
+                          child: Center(
+                              child:
+                                  Image.asset(_data.foregroundImageUrl ?? ""))),
+                    ),
+                  )
+                : const SizedBox(),
+
+            _data.topGroundImageUrl != ""
+                ? Positioned.fill(
+                    child: Center(
+                      child: Transform.translate(
+                          offset: Offset(_updateDx / 2, _updateDy / 2),
+                          child: Image.asset(_data.topGroundImageUrl ?? "")),
+                    ),
+                  )
+                : const SizedBox(),
+          ])),
+    );
   }
 }
 
