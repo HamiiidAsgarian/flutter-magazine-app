@@ -49,16 +49,11 @@ class _Carousel1State extends State<Carousel1>
   Widget build(BuildContext context) {
     final List<Widget> widgetedItems = widget.items
         .map(
-          (e) => ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: Container(
-              // color: myColors[0],
-              width: _cardWith,
-              height: _cardHeight,
-              child: Stack(children: [
-                Image.asset(e.backgroundImageUrl ?? ""),
-              ]),
-            ),
+          (e) => Container(
+            // color: myColors[0],
+            width: _cardWith,
+            height: _cardHeight,
+            child: Image.asset(e.backgroundImageUrl ?? ""),
           ),
         )
         .toList();
