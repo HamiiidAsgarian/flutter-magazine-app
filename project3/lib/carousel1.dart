@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:project3/item_class.dart';
 import 'package:project3/page2.dart';

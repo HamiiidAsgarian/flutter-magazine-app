@@ -206,13 +206,21 @@ class _MyCustomCardsState extends State<MyCustomCards>
         0,
         AnimatedBuilder(
           animation: _cardsChangeAnim,
-          builder: (context, child) => DynamicCardNotOnTop(
-            data: _itemsStackCardOrder[3],
-            cardWith: _cardWith,
-            cardHeight: _cardHeight,
-            scaleValue: _translateAnims[3].value,
-            rotateValue: _rotateAnims[3].value,
-          ),
+          builder: (context, child) => _itemsStackCardOrder.length >= 4
+              ? DynamicCardNotOnTop(
+                  data: _itemsStackCardOrder[3],
+                  cardWith: _cardWith,
+                  cardHeight: _cardHeight,
+                  scaleValue: _translateAnims[3].value,
+                  rotateValue: _rotateAnims[3].value,
+                )
+              : DynamicCardNotOnTop(
+                  data: _itemsStackCardOrder[0],
+                  cardWith: _cardWith,
+                  cardHeight: _cardHeight,
+                  scaleValue: _translateAnims[3].value,
+                  rotateValue: _rotateAnims[3].value,
+                ),
         ));
     return cardsStack;
   }
