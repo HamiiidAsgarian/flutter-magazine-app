@@ -1,3 +1,4 @@
+import 'dart:js_util';
 import 'dart:math';
 import 'dart:ui';
 
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:project3/carousel1.dart';
 import 'package:project3/item_class.dart';
 import 'package:project3/page2.dart';
+import 'package:project3/shapes.dart';
 import 'package:project3/widgets.dart';
 
 main() {
@@ -103,6 +105,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  ScrollController testCntrl = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,81 +145,89 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.red,
                   child: Carousel1(items: widget.cardItems))),
 
-          Transform(
-            transform: Matrix4.skewX(0),
-            child: Container(
-              height: 200,
-              color: Colors.pink,
-              width: double.infinity,
-              child: ListView(scrollDirection: Axis.horizontal, children: [
-                // Center(
-                //   child: ClipPath(
-                //     clipper: SkewCut(),
-                //     child: Container(
-                //       color: Color.fromARGB(255, 54, 244, 86),
-                //       // width: 200,
-                //       // height: 50,
-                //       child: Center(child: Text("Hello World")),
-                //     ),
-                //   ),
-                // ),
-                // Align(
-                //   alignment: Alignment.centerLeft,
-                //   child: ClipPath(
-                //     clipper: SkewCut2(),
-                //     child: Container(
-                //       color: Color.fromARGB(255, 244, 177, 54),
-                //       // width: 200,
-                //       // height: 50,
-                //       child: Center(child: Text("Hello World")),
-                //     ),
-                //   ),
-                // ),
+          Container(
+            height: 150,
+            color: Colors.pink,
+            width: double.infinity,
+            child: Transform(
+              transform: Matrix4(
+                1, 0, 0, 0, //
+                0, 1, 0, 0, //
+                0, 0, 1, 0, //
+                0, 0, 0, 1,
+              ),
 
-                Container(
-                  // color: Colors.black,
-                  width: 200,
-                  height: 10,
-                  child: CustomPaint(
-                    size: Size(50.0,
-                        50.0), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                    painter: RPSCustomPainter(),
-                  ),
-                ),
-                Container(
-                  // color: Colors.black,
-                  width: 200,
-                  height: 10,
-                  child: CustomPaint(
-                    size: Size(50.0,
-                        50.0), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                    painter: RPSCustomPainter(),
-                    child: Stack(children: [
-                      ClipPath(
-                          clipper: SkewCut2(),
-                          child: Image.asset("images/f1.png"))
-                    ]),
-                  ),
-                ),
-                // Container(
-                //   color: Color.fromARGB(255, 218, 218, 218),
+              // transform: Matrix4(
+              //   1, -.13, 0, -0.0008, //
+              //   0, 1, 0, 0, //
+              //   0, 0, 1, 0, //
+              //   0, 0, 0, 1,
+              // )
 
-                //   // width: 100,
-                //   child: Image.asset("/t/2.png"),
-                // ),
-                // Container(
-                //   color: Color.fromARGB(255, 131, 131, 131),
+              child: ListView.builder(
+                // itemExtent: 200,
+                controller: testCntrl,
+                scrollDirection: Axis.horizontal,
+                itemCount: 20,
+                itemBuilder: (context, index) {
+                  print(testCntrl.offset);
 
-                //   // width: 100,
-                //   child: Image.asset("/t/3.png"),
-                // ),
-                // Container(
-                //   color: Colors.black,
+                  return GestureDetector(
+                    onTap: () {
+                      print("object $index");
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Container(
+                        padding: EdgeInsets.all(0),
 
-                //   // width: 100,
-                //   child: Image.asset("/t/4.png"),
-                // )
-              ]),
+                        color: Colors.black.withOpacity(.1),
+                        width: 150,
+                        // height: 100,
+                        child: modulo(index, 2) == 0
+                            ? CustomPaint(
+                                // size: const Size(10.0,
+                                //     10.0), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                                painter: LeftBoltShape(
+                                    color: modulo(index, 2) == 0
+                                        ? Colors.yellow
+                                        : Colors.blue),
+                                child: Stack(children: [
+                                  // ClipPath(
+                                  //     clipper: SkewCut2(),
+                                  //     child: Transform.scale(
+                                  //       scale: 1.5,
+                                  //       child: Image.asset(
+                                  //         "images/l1.png",
+                                  //         fit: BoxFit.fill,
+                                  //       ),
+                                  //     ))
+                                ]),
+                              )
+                            : CustomPaint(
+                                // size: const Size(10.0,
+                                //     10.0), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                                painter: RightBoltShape(
+                                    color: modulo(index, 2) == 0
+                                        ? Colors.yellow
+                                        : Colors.blue),
+                                child: Stack(children: [
+                                  // ClipPath(
+                                  //     clipper: SkewCut2(),
+                                  //     child: Transform.scale(
+                                  //       scale: 1.5,
+                                  //       child: Image.asset(
+                                  //         "images/l1.png",
+                                  //         fit: BoxFit.fill,
+                                  //       ),
+                                  //     ))
+                                ]),
+                              ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           )
           // Expanded(
@@ -245,7 +257,7 @@ class OthersSection extends StatelessWidget {
               color: Colors.blueAccent,
             )),
         const Text("others"),
-        Container(
+        SizedBox(
           height: 200,
           child: ListView(
             shrinkWrap: true,
@@ -357,64 +369,3 @@ class MyThriangle extends CustomPainter {
 //Add this CustomPaint widget to the Widget Tree
 
 //Copy this CustomPainter code to the Bottom of the File
-class RPSCustomPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Path path_0 = Path();
-    path_0.moveTo(size.width, size.height * 0.7942440);
-    path_0.lineTo(0, size.height);
-    path_0.lineTo(size.width * 0.3097017, 0);
-    path_0.lineTo(size.width * 0.8545011, size.height * 0.2716143);
-    path_0.lineTo(size.width, size.height * 0.7942440);
-    path_0.close();
-
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Colors.red.withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_fill);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-class SkewCut extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-
-    path.lineTo(0, 0);
-    path.lineTo(50, 0);
-    path.lineTo(30, 50);
-
-    // path.lineTo(size.width - 20, size.height);
-    // path.lineTo(0, size.height);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(SkewCut oldClipper) => false;
-}
-
-class SkewCut2 extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-
-    path.lineTo(0, 0);
-    path.lineTo(100, 0);
-    path.lineTo(100, 100);
-
-    // path.lineTo(size.width - 20, size.height);
-    // path.lineTo(0, size.height);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(SkewCut oldClipper) => false;
-}
