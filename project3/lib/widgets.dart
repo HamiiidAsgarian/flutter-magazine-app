@@ -75,11 +75,11 @@ class _MyCustomCardsState extends State<MyCustomCards>
 
     _rotateAnim = Tween<double>(begin: 0, end: 0).animate(
         CurvedAnimation(parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-    _rotateAnim1 = Tween<double>(begin: -(pi / 7), end: 0).animate(
+    _rotateAnim1 = Tween<double>(begin: -(pi / 10), end: 0).animate(
         CurvedAnimation(parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-    _rotateAnim2 = Tween<double>(begin: (pi / 7), end: -(pi / 7)).animate(
+    _rotateAnim2 = Tween<double>(begin: (pi / 10), end: -(pi / 10)).animate(
         CurvedAnimation(parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-    _rotateAnim3 = Tween<double>(begin: 0, end: (pi / 7)).animate(
+    _rotateAnim3 = Tween<double>(begin: 0, end: (pi / 10)).animate(
         CurvedAnimation(parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
 
     _translateAnims = [
@@ -122,7 +122,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
   static const double _cardHeight = 400;
 
   static const double _skipDistance =
-      100; // distance(left ot right) from center of the cart to start skip(next) animation
+      50; // distance(left ot right) from center of the cart to start skip(next) animation
 
   int currentIndex = 1;
   bool _isSelected = false;
@@ -311,10 +311,10 @@ class _MyCustomCardsState extends State<MyCustomCards>
         _isSelected = true;
         _rotateAnim = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(
             parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-        _rotateAnim1 = Tween<double>(begin: -(pi / 7), end: 0).animate(
+        _rotateAnim1 = Tween<double>(begin: -(pi / 10), end: 0).animate(
             CurvedAnimation(
                 parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-        _rotateAnim2 = Tween<double>(begin: (pi / 7), end: 0).animate(
+        _rotateAnim2 = Tween<double>(begin: (pi / 10), end: 0).animate(
             CurvedAnimation(
                 parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
         _rotateAnim3 = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(
@@ -330,13 +330,13 @@ class _MyCustomCardsState extends State<MyCustomCards>
       setState(() {
         _rotateAnim = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(
             parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-        _rotateAnim1 = Tween<double>(begin: -(pi / 7), end: 0).animate(
+        _rotateAnim1 = Tween<double>(begin: -(pi / 10), end: 0).animate(
             CurvedAnimation(
                 parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-        _rotateAnim2 = Tween<double>(begin: (pi / 7), end: -(pi / 7)).animate(
+        _rotateAnim2 = Tween<double>(begin: (pi / 10), end: -(pi / 10)).animate(
             CurvedAnimation(
                 parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-        _rotateAnim3 = Tween<double>(begin: 0, end: (pi / 7)).animate(
+        _rotateAnim3 = Tween<double>(begin: 0, end: (pi / 10)).animate(
             CurvedAnimation(
                 parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
 

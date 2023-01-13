@@ -31,4 +31,57 @@ class MyCardItem {
         topGroundImageUrl: topGroundImageUrl,
         fullImage: fullImage);
   }
+
+  static List<Map<String, dynamic>> data = [
+    {
+      "title": "Spiderman",
+      "description": "frinedlySpider",
+      "coverImages": {
+        "backgroundImage": "assets/images/b1.png",
+        "foregroundImage": "assets/images/f1.png",
+        "effectImage": "assets/images/e1.png",
+        "fullImage": "assets/images/c1.png"
+      }
+    },
+    {
+      "title": "Capitan",
+      "description": "cap",
+      "coverImages": {
+        "backgroundImage": "assets/images/b2.png",
+        "foregroundImage": "assets/images/f2.png",
+        "effectImage": "",
+        "fullImage": "assets/images/c2.png"
+      }
+    },
+    {
+      "title": "Capitan",
+      "description": "cap",
+      "coverImages": {
+        "backgroundImage": "assets/images/b3.png",
+        "foregroundImage": "assets/images/f3.png",
+        "effectImage": "assets/images/e3.png",
+        "fullImage": "assets/images/c3.png"
+      }
+    },
+    {
+      "title": "Capitan",
+      "description": "cap",
+      "coverImages": {
+        "backgroundImage": "assets/images/b4.png",
+        "foregroundImage": "assets/images/f4.png",
+        "effectImage": "assets/images/e4.png",
+        "fullImage": "assets/images/c4.png"
+      }
+    },
+    {
+      "title": "Capitan",
+      "description": "cap",
+      "coverImages": {
+        "backgroundImage": "assets/images/b5.png",
+        "foregroundImage": "assets/images/f5.png",
+        "effectImage": "",
+        "fullImage": "assets/images/c5.png"
+      }
+    }
+  ];
 }
