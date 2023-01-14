@@ -148,7 +148,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
       //The card on the top
       if (i == 0) {
         cardsStack.add(Hero(
-          tag: "Hero1",
+          tag: "Hero$i",
           child: GestureDetector(
             onTapUp: (details) async {
               onTapUp();

@@ -139,16 +139,29 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 219, 219, 219),
+        backgroundColor: const Color.fromARGB(255, 253, 234, 8),
         bottomNavigationBar: const MyNavbar(),
         appBar: const MyAppbar(),
-        body: Column(
-          children: [
-            const GeanraSection(),
-            CarouselSection(cardItems: widget.cardItems),
-            // const SizedBox(height: 50),
-            OtherCharactersSection(shapes: shapes)
-          ],
+        body: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                Color.fromARGB(255, 253, 234, 8),
+                Color.fromARGB(255, 218, 218, 218)
+              ])),
+          child: Column(
+            children: [
+              // SizedBox(
+              //   height: 15,
+              // ),
+              const AspectRatio(aspectRatio: 7.1, child: GeanraSection()),
+              CarouselSection(cardItems: widget.cardItems),
+              // const SizedBox(height: 50),
+              OtherCharactersSection(shapes: shapes)
+            ],
+          ),
         ),
       ),
     );
@@ -163,20 +176,20 @@ class GeanraSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 5),
+      margin: const EdgeInsets.only(bottom: 8),
       height: 50,
       width: double.infinity,
       color: Colors.green.withOpacity(.1),
-      padding: const EdgeInsets.symmetric(horizontal: 11.5),
+      padding: const EdgeInsets.symmetric(horizontal: 13),
       child: Stack(
         children: [
           Positioned.fill(
             child: CustomPaint(
-              painter: GeanrasShape(color: Colors.black),
+              painter: GeanrasShape(color: Colors.pink),
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 2),
             child: Transform(
               transform: Matrix4(
                 // 2.85, -.0, 0, 0.005, //
@@ -187,7 +200,7 @@ class GeanraSection extends StatelessWidget {
               ) //NOTE
               ,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     // color: const Color.fromARGB(255, 255, 62, 62),
                     // border: Border.all(
                     //     width: 3, color: const Color.fromARGB(255, 0, 0, 0)),

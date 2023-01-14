@@ -109,7 +109,16 @@ flutter:
     - assets/images/i6.png
     - assets/images/i7.png
 
+
     - assets/images/bb6.png
+    - assets/images/avatar.png
+    - assets/images/nav1.png
+    - assets/images/navi.png
+    - assets/images/navb.png
+
+
+
+
 
 
 
@@ -138,6 +147,10 @@ flutter:
         - asset: assets/fonts/AVENGEANCE MIGHTIEST AVENGER.ttf
         # - asset: fonts/Schyler-Italic.ttf
           # style: italic
+    - family: Komyca
+      fonts:
+        - asset: assets/fonts/Komyca.ttf
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

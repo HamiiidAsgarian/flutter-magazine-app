@@ -176,8 +176,20 @@ class GeanrasShape extends CustomPainter {
         path,
         paint0Fill
           ..style = PaintingStyle.stroke
+          ..strokeWidth = 6
+          ..color = Colors.black);
+
+    // Paint paint0Fill2 = Paint();
+
+    canvas.drawPath(
+        path,
+        paint0Fill
+          ..style = PaintingStyle.fill
           ..strokeWidth = 3
           ..color = color ?? Colors.pink);
+
+    // canvas.drawLine(
+    //     Offset(0, 0), Offset(size.width, -size.height * .3), paint0Fill);
 
     // canvas.drawLine(path, p2, paint)
   }

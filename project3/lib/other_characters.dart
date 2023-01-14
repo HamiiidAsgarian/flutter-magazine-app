@@ -146,7 +146,7 @@ class OtherCharactersSection extends StatelessWidget {
               child: const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Other Heroes",
+                    "Popular Heroes",
                     style: TextStyle(fontSize: 15),
                   )),
             ),
