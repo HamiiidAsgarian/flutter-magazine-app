@@ -40,12 +40,12 @@ class CarouselSection extends StatelessWidget {
                       ),
                       child: Container(
                         decoration: BoxDecoration(
-                          image: const DecorationImage(
-                            image: ExactAssetImage('assets/images/bb6.png'),
-                            fit: BoxFit.cover,
-                          ),
-                          border: Border.all(width: 3),
-                        ),
+                            image: const DecorationImage(
+                              image: ExactAssetImage('assets/images/bb6.png'),
+                              fit: BoxFit.cover,
+                            ),
+                            border: Border.all(width: 3),
+                            borderRadius: BorderRadius.circular(3)),
                         child: ClipRRect(
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 010, sigmaY: 010),

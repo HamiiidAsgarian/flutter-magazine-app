@@ -21,6 +21,7 @@ class Shape1 extends CustomPainter {
         path,
         paint0Fill
           ..style = PaintingStyle.stroke
+          ..strokeJoin = StrokeJoin.round
           ..strokeWidth = 7.5
           ..color = color ?? Colors.pink);
   }
@@ -52,6 +53,7 @@ class Shape2 extends CustomPainter {
         path,
         paint0Fill
           ..style = PaintingStyle.stroke
+          ..strokeJoin = StrokeJoin.round
           ..strokeWidth = 7.5
           ..color = color ?? Colors.pink);
   }
@@ -83,6 +85,7 @@ class Shape3 extends CustomPainter {
         path,
         paint0Fill
           ..style = PaintingStyle.stroke
+          ..strokeJoin = StrokeJoin.round
           ..strokeWidth = 7.5
           ..color = color ?? Colors.pink);
   }
@@ -114,6 +117,7 @@ class Shape5 extends CustomPainter {
         path,
         paint0Fill
           ..style = PaintingStyle.stroke
+          ..strokeJoin = StrokeJoin.round
           ..strokeWidth = 7.5
           ..color = color ?? Colors.pink);
   }
@@ -145,6 +149,7 @@ class ShapeEnd extends CustomPainter {
         path,
         paint0Fill
           ..style = PaintingStyle.stroke
+          ..strokeJoin = StrokeJoin.round
           ..strokeWidth = 7.5
           ..color = color ?? Colors.pink);
   }
@@ -176,6 +181,7 @@ class GeanrasShape extends CustomPainter {
         path,
         paint0Fill
           ..style = PaintingStyle.stroke
+          ..strokeJoin = StrokeJoin.round
           ..strokeWidth = 6
           ..color = Colors.black);
 
@@ -200,7 +206,70 @@ class GeanrasShape extends CustomPainter {
   }
 }
 
+class NavbarShape extends CustomPainter {
+  final Color? color;
+
+  NavbarShape({this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Path path = Path();
+
+    path.lineTo(0, 0);
+    path.lineTo(size.width, 0);
+    // path.lineTo(size.width - (size.width * .05), size.height * .5);
+    path.lineTo(size.width, size.height * .5);
+
+    path.lineTo(size.width - (size.width * .05), size.height);
+
+    path.lineTo(0 + (size.width * .05), size.height);
+    path.lineTo(0, size.height * .5);
+    // path.lineTo(0 + (size.width * .05), size.height * .5);
+
+    path.close();
+
+    Paint paint0Fill = Paint();
+    canvas.drawPath(
+        path,
+        paint0Fill
+          ..style = PaintingStyle.stroke
+          ..strokeJoin = StrokeJoin.round
+          ..strokeWidth = 6
+          ..color = color ?? Colors.pink);
+  }
+
+  @override
+  bool shouldRepaint(covariant NavbarShape oldDelegate) {
+    return true;
+  }
+}
+
 //------------------------------------------------------------------------------!SECTION
+
+class NavbarClip extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+
+    path.lineTo(0, 0);
+    path.lineTo(size.width, 0);
+    // path.lineTo(size.width - (size.width * .05), size.height * .5);
+    path.lineTo(size.width, size.height * .5);
+
+    path.lineTo(size.width - (size.width * .05), size.height);
+
+    path.lineTo(0 + (size.width * .05), size.height);
+    path.lineTo(0, size.height * .5);
+    // path.lineTo(0 + (size.width * .05), size.height * .5);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(NavbarClip oldClipper) => false;
+}
+
 class Clip1 extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {

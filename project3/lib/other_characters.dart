@@ -51,7 +51,7 @@ class OtherCharactersSection extends StatelessWidget {
               ),
 
               child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 0),
+                padding: const EdgeInsets.symmetric(horizontal: 0),
                 itemExtent: 150,
                 scrollDirection: Axis.horizontal,
                 itemCount: shapes.length,
@@ -138,7 +138,7 @@ class OtherCharactersSection extends StatelessWidget {
                   top: 12.5, bottom: 10, left: 10, right: 10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: const Color.fromARGB(255, 216, 197, 8),
+                  color: const Color.fromARGB(255, 253, 234, 8),
                   border: Border.all(
                       width: 3, color: const Color.fromARGB(255, 22, 22, 22))),
               // width: 150,
