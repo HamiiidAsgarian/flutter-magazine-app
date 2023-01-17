@@ -13,7 +13,7 @@ class CarouselSection extends StatelessWidget {
     required this.cardItems,
   }) : super(key: key);
 
-  final List<MyCardItem> cardItems;
+  final List<MyCarouselItem> cardItems;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +24,7 @@ class CarouselSection extends StatelessWidget {
           child: Container(
             // color: Colors.green,
             child: Stack(
+              clipBehavior: Clip.none,
               // padding: EdgeInsets.symmetric(horizontal: 25),
               children: [
                 Container(
@@ -59,11 +60,33 @@ class CarouselSection extends StatelessWidget {
                     ),
                   ),
                 ),
+                Align(
+                  alignment: Alignment(.0, -1),
+                  // top: -0,
+                  // right: 10,
+                  // alignment: Alignment.topLeft,
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                        top: 12.5, bottom: 10, left: 10, right: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: const Color.fromARGB(255, 255, 243, 110),
+                        border: Border.all(
+                            width: 3,
+                            color: const Color.fromARGB(255, 22, 22, 22))),
+                    // width: 150,
+                    // height: 50,
+                    child: const Text(
+                      "Today's Heroes",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ),
                 Container(
                     margin: const EdgeInsets.only(bottom: 30),
                     padding: const EdgeInsets.symmetric(vertical: 60),
                     child: Carousel1(items: cardItems)),
-                const Center(child: FlutterLogo()),
               ],
             ),
           ),
@@ -74,7 +97,7 @@ class CarouselSection extends StatelessWidget {
 class Carousel1 extends StatefulWidget {
   const Carousel1({required this.items, super.key});
 
-  final List<MyCardItem> items;
+  final List<MyCarouselItem> items;
 
   @override
   State<Carousel1> createState() => _Carousel1State();
@@ -96,6 +119,7 @@ class _Carousel1State extends State<Carousel1>
 
   @override
   void initState() {
+    print(widget.items.length);
     // _animCntrl1 = AnimationController(
     //     vsync: this, duration: const Duration(milliseconds: 400));
 

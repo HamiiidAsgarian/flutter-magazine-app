@@ -25,7 +25,7 @@ class MyNavbar extends StatelessWidget {
                 child: Stack(
                   children: [
                     Container(
-                      color: Color.fromARGB(255, 255, 243, 110),
+                      color: const Color.fromARGB(255, 255, 243, 110),
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
@@ -35,7 +35,8 @@ class MyNavbar extends StatelessWidget {
                         width: double.infinity,
                         child: Image.asset(
                           "assets/images/dotpattern.png",
-                          color: Color.fromARGB(255, 255, 0, 0).withAlpha(100),
+                          color: const Color.fromARGB(255, 255, 0, 0)
+                              .withAlpha(100),
                           repeat: ImageRepeat.repeat,
                         ),
                       ),
@@ -50,7 +51,7 @@ class MyNavbar extends StatelessWidget {
           Align(
             alignment: const Alignment(.7, 0),
             child: Column(
-              children: [
+              children: const [
                 // Text(
                 //   "Home",
                 //   style: TextStyle(
@@ -61,10 +62,6 @@ class MyNavbar extends StatelessWidget {
                 //             offset: Offset(-2, 2))
                 //       ]),
                 // ),
-                Image.asset(
-                  "assets/images/heart.png",
-                  width: 35,
-                ),
               ],
             ),
           ),
@@ -72,6 +69,13 @@ class MyNavbar extends StatelessWidget {
             alignment: const Alignment(-.7, 0),
             child: Image.asset(
               "assets/images/search.png",
+              width: 35,
+            ),
+          ),
+          Align(
+            alignment: const Alignment(.7, 0),
+            child: Image.asset(
+              "assets/images/heart.png",
               width: 35,
             ),
           ),
@@ -105,7 +109,7 @@ class MyNavbar extends StatelessWidget {
                             height: 35,
                             child: Image.asset(
                               "assets/images/home.png",
-                              color: Color.fromARGB(255, 51, 51, 51),
+                              color: const Color.fromARGB(255, 51, 51, 51),
                             )))
                   ],
                 ),
@@ -156,7 +160,10 @@ class MyAppbar extends StatelessWidget with PreferredSizeWidget {
                   )
                 ])),
           ])),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.menu))
+          IconButton(
+              alignment: Alignment.topCenter,
+              onPressed: () {},
+              icon: const Icon(Icons.menu))
         ],
 
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,

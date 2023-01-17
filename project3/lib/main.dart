@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -16,15 +15,19 @@ main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static List<Map<String, dynamic>> data = MyCardItem.data;
+  static Map<String, dynamic> data = MyCarouselItem.data;
 
   @override
   Widget build(BuildContext context) {
-    List<MyCardItem> serilizedData = data
-        .map(
-          (e) => MyCardItem.fromMap(e),
-        )
-        .toList();
+    List<MyCarouselItem> carouselsData = [];
+    List<MyListItem> otherHeroesData = [];
+
+    for (var e in data['carousels']) {
+      carouselsData.add(MyCarouselItem.fromMap(e));
+    }
+    for (var e in data['otherHeroes']) {
+      otherHeroesData.add(MyListItem.fromMap(e));
+    }
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -36,7 +39,8 @@ class MyApp extends StatelessWidget {
         )),
       ),
       scrollBehavior: MyCustomScrollBehavior(),
-      home: HomeScreen(cardItems: serilizedData),
+      home: HomeScreen(
+          carouselItems: carouselsData, otherHeroesItems: otherHeroesData),
       //     home: Page2(
       //   selectedItem:
       //       Container(width: 200, height: 400, color: Colors.pinkAccent),
@@ -46,102 +50,32 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({required this.cardItems, super.key});
+  const HomeScreen(
+      {required this.carouselItems, super.key, required this.otherHeroesItems});
 
-  final List<MyCardItem> cardItems;
+  final List<MyCarouselItem> carouselItems;
+  final List<MyListItem> otherHeroesItems;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List shapes = [
-    CustomPaint(
-        painter: Shape1(color: Colors.black),
-        child: ClipPath(
-            clipper: Clip1(),
-            child: Transform.scale(
-              scale: 1.5,
-              child: Image.asset(
-                "assets/images/i1.png",
-                fit: BoxFit.fill,
-              ),
-            ))),
-    CustomPaint(
-        painter: Shape2(color: Colors.black),
-        child: ClipPath(
-            clipper: Clip2(),
-            child: Transform.scale(
-              scale: 1.5,
-              child: Image.asset(
-                "assets/images/i2.png",
-                fit: BoxFit.fill,
-              ),
-            ))),
-    CustomPaint(
-        painter: Shape3(color: Colors.black),
-        child: ClipPath(
-            clipper: Clip3(),
-            child: Transform.scale(
-              scale: 1.5,
-              child: Image.asset(
-                "assets/images/i4.png",
-                fit: BoxFit.fill,
-              ),
-            ))),
-    CustomPaint(
-        painter: Shape2(color: Colors.black),
-        child: ClipPath(
-            clipper: Clip2(),
-            child: Transform.scale(
-              scale: 1.5,
-              child: Image.asset(
-                "assets/images/i3.png",
-                fit: BoxFit.fill,
-              ),
-            ))),
-    CustomPaint(
-        painter: Shape5(color: Colors.black),
-        child: ClipPath(
-            clipper: Clip5(),
-            child: Transform.scale(
-              scale: 1.5,
-              child: Image.asset(
-                "assets/images/i5.png",
-                fit: BoxFit.fill,
-              ),
-            ))),
-    CustomPaint(
-        painter: Shape3(color: Colors.black),
-        child: ClipPath(
-            clipper: Clip3(),
-            child: Transform.scale(
-              scale: 1.5,
-              child: Image.asset(
-                "assets/images/i6.png",
-                fit: BoxFit.fill,
-              ),
-            ))),
-    CustomPaint(
-        painter: Shape2(color: Colors.black),
-        child: ClipPath(
-            clipper: Clip2(),
-            child: Transform.scale(
-              scale: 1.5,
-              child: Image.asset(
-                "assets/images/i7.png",
-                fit: BoxFit.fill,
-              ),
-            ))),
-  ];
+  List<CustomPaint> otherHeroesItems = [];
+
+  @override
+  void initState() {
+    otherItemsGenerator();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 253, 234, 8),
-        bottomNavigationBar: const MyNavbar(),
-        appBar: const MyAppbar(),
+        // bottomNavigationBar: const MyNavbar(),
+        // appBar: const MyAppbar(),
         body: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -153,19 +87,59 @@ class _HomeScreenState extends State<HomeScreen> {
               ])),
           child: Column(
             children: [
-              // SizedBox(
-              //   height: 15,
-              // ),
-              const AspectRatio(aspectRatio: 7.1, child: GeanraSection()),
-              CarouselSection(cardItems: widget.cardItems),
-              // const SizedBox(height: 50),
-              OtherCharactersSection(shapes: shapes)
+              // const GeanraSection(),
+              CarouselSection(cardItems: widget.carouselItems),
+              // OtherCharactersSection(items: otherHeroesItems)
             ],
           ),
         ),
       ),
     );
   }
+
+  otherItemsGenerator() {
+    for (var i = 0; i < widget.otherHeroesItems.length; i++) {
+      if (i == 0) {
+        otherHeroesItems.add(customCardGenerator(
+            painter: Shape1(color: Colors.black),
+            clipper: Clip1(),
+            imageUrl: widget.otherHeroesItems[i].fullImage));
+      } else if ((i + 1) % 3 == 0) {
+        otherHeroesItems.add(customCardGenerator(
+            painter: Shape3(color: Colors.black),
+            clipper: Clip3(),
+            imageUrl: widget.otherHeroesItems[i].fullImage));
+      } else if ((i + 1) % 5 == 0) {
+        otherHeroesItems.add(customCardGenerator(
+            painter: Shape5(color: Colors.black),
+            clipper: Clip5(),
+            imageUrl: widget.otherHeroesItems[i].fullImage));
+      } else if ((i + 1) % 2 == 0) {
+        otherHeroesItems.add(customCardGenerator(
+            painter: Shape2(color: Colors.black),
+            clipper: Clip2(),
+            imageUrl: widget.otherHeroesItems[i].fullImage));
+      }
+    }
+  }
+}
+
+customCardGenerator({
+  CustomPainter? painter,
+  String? imageUrl,
+  CustomClipper<Path>? clipper,
+}) {
+  return CustomPaint(
+      painter: painter,
+      child: ClipPath(
+          clipper: clipper,
+          child: Transform.scale(
+            scale: 1.5,
+            child: Image.asset(
+              imageUrl ?? "",
+              fit: BoxFit.fill,
+            ),
+          )));
 }
 
 class GeanraSection extends StatelessWidget {
@@ -175,57 +149,62 @@ class GeanraSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      height: 50,
-      width: double.infinity,
-      color: Colors.green.withOpacity(.1),
-      padding: const EdgeInsets.symmetric(horizontal: 13),
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: CustomPaint(
-              painter: GeanrasShape(color: Colors.pink),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: Transform(
-              transform: Matrix4(
-                // 2.85, -.0, 0, 0.005, //
-                1, -.07, 0, 0.0, //
-                0, 1, 0, 0, //
-                0, 0, 1, 0.01, //
-                0, 0, 0, 1,
-              ) //NOTE
-              ,
-              child: Container(
-                decoration: const BoxDecoration(
-                    // color: const Color.fromARGB(255, 255, 62, 62),
-                    // border: Border.all(
-                    //     width: 3, color: const Color.fromARGB(255, 0, 0, 0)),
-                    ),
-                // padding: EdgeInsets.symmetric(horizontal: 10),
-                height: double.infinity,
-                child: ListView(
-                  itemExtent: 100,
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    TextButton(
-                        onPressed: (() {}), child: const Text("Marvel Comics")),
-                    TextButton(
-                        onPressed: (() {}), child: const Text("DC Comics")),
-                    TextButton(onPressed: (() {}), child: const Text("Anime")),
-                    TextButton(onPressed: (() {}), child: const Text("Manga")),
-                    TextButton(onPressed: (() {}), child: const Text("Cartoon"))
-                  ],
+    return AspectRatio(
+        aspectRatio: 7.1,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          height: 50,
+          width: double.infinity,
+          // color: Colors.green.withOpacity(.1),
+          padding: const EdgeInsets.symmetric(horizontal: 13),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: CustomPaint(
+                  painter: GeanrasShape(color: Colors.pink),
                 ),
               ),
-            ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: Transform(
+                  transform: Matrix4(
+                    // 2.85, -.0, 0, 0.005, //
+                    1, -.07, 0, 0.0, //
+                    0, 1, 0, 0, //
+                    0, 0, 1, 0.01, //
+                    0, 0, 0, 1,
+                  ) //NOTE
+                  ,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        // color: const Color.fromARGB(255, 255, 62, 62),
+                        // border: Border.all(
+                        //     width: 3, color: const Color.fromARGB(255, 0, 0, 0)),
+                        ),
+                    // padding: EdgeInsets.symmetric(horizontal: 10),
+                    height: double.infinity,
+                    child: ListView(
+                      itemExtent: 100,
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        'Marvel Comics',
+                        "DC Comics",
+                        "Anime",
+                        "Manga",
+                        "Cartoon"
+                      ]
+                          .map((e) => TextButton(
+                                onPressed: (() {}),
+                                child: Text(e),
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }
 

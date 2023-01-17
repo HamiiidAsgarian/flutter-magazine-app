@@ -18,7 +18,7 @@ class MyCustomCards extends StatefulWidget {
       this.leftOrRightResult});
 
   final List<Widget> items;
-  final List<MyCardItem> itemss;
+  final List<MyCarouselItem> itemss;
   final Function(MyCardsDragDirection)? leftOrRightResult;
   final Function(int)? currentIndex;
   final Function(CardsSelectionStatus)? onTap;
@@ -50,7 +50,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
   // late List<Widget> _items;
   late List<Widget> _widgetedItems;
 
-  late List<MyCardItem> _itemsStackCardOrder;
+  late List<MyCarouselItem> _itemsStackCardOrder;
 
   @override
   void initState() {
@@ -206,21 +206,13 @@ class _MyCustomCardsState extends State<MyCustomCards>
         0,
         AnimatedBuilder(
           animation: _cardsChangeAnim,
-          builder: (context, child) => _itemsStackCardOrder.length >= 4
-              ? DynamicCardNotOnTop(
-                  data: _itemsStackCardOrder[3],
-                  cardWith: _cardWith,
-                  cardHeight: _cardHeight,
-                  scaleValue: _translateAnims[3].value,
-                  rotateValue: _rotateAnims[3].value,
-                )
-              : DynamicCardNotOnTop(
-                  data: _itemsStackCardOrder[0],
-                  cardWith: _cardWith,
-                  cardHeight: _cardHeight,
-                  scaleValue: _translateAnims[3].value,
-                  rotateValue: _rotateAnims[3].value,
-                ),
+          builder: (context, child) => DynamicCardNotOnTop(
+            data: _itemsStackCardOrder[3],
+            cardWith: _cardWith,
+            cardHeight: _cardHeight,
+            scaleValue: _translateAnims[3].value,
+            rotateValue: _rotateAnims[3].value,
+          ),
         ));
     return cardsStack;
   }
@@ -278,7 +270,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
         _updateDy = 0;
         _updateDx = 0;
 
-        MyCardItem temp = _itemsStackCardOrder.first;
+        MyCarouselItem temp = _itemsStackCardOrder.first;
         _itemsStackCardOrder.removeAt(0);
         _itemsStackCardOrder.add(temp);
 
@@ -355,7 +347,7 @@ class DynamicCardNotOnTop extends StatelessWidget {
     required double rotateValue,
     required double cardWith,
     required double cardHeight,
-    required MyCardItem data,
+    required MyCarouselItem data,
   })  : _scaleValue = scaleValue,
         _rotateValue = rotateValue,
         _cardWith = cardWith,
@@ -367,7 +359,7 @@ class DynamicCardNotOnTop extends StatelessWidget {
   final double _rotateValue;
   final double _cardWith;
   final double _cardHeight;
-  final MyCardItem _data;
+  final MyCarouselItem _data;
 
   @override
   Widget build(BuildContext context) {
@@ -412,7 +404,7 @@ class DynamicCardNotOnTop extends StatelessWidget {
 class DynamicCardOnTop extends StatelessWidget {
   const DynamicCardOnTop({
     Key? key,
-    required MyCardItem data,
+    required MyCarouselItem data,
     required double cardWith,
     required double cardHeight,
     required double dxPosition,
@@ -430,7 +422,7 @@ class DynamicCardOnTop extends StatelessWidget {
 
   final double _cardWith;
   final double _cardHeight;
-  final MyCardItem _data;
+  final MyCarouselItem _data;
   final double _updateDx;
   final double _updateDy;
 
@@ -472,7 +464,9 @@ class DynamicCardOnTop extends StatelessWidget {
                     child: Center(
                       child: Transform.translate(
                           offset: Offset(_updateDx / 2, _updateDy / 2),
-                          child: Image.asset(_data.topGroundImageUrl ?? "")),
+                          child: Center(
+                              child:
+                                  Image.asset(_data.topGroundImageUrl ?? ""))),
                     ),
                   )
                 : const SizedBox(),

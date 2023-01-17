@@ -94,10 +94,10 @@ flutter:
     - assets/images/f5.png
     - assets/images/c5.png
 
-    - assets/t/1.png
-    - assets/t/2.png
-    - assets/t/3.png
-    - assets/t/4.png
+    # - assets/t/1.png
+    # - assets/t/2.png
+    # - assets/t/3.png
+    # - assets/t/4.png
 
     - assets/images/000.png
     - assets/images/l1.png

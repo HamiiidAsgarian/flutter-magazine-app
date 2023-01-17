@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class OtherCharactersSection extends StatelessWidget {
   const OtherCharactersSection({
     Key? key,
-    required this.shapes,
+    required this.items,
   }) : super(key: key);
 
-  final List shapes;
+  final List<CustomPaint> items;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class OtherCharactersSection extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 0),
                 itemExtent: 150,
                 scrollDirection: Axis.horizontal,
-                itemCount: shapes.length,
+                itemCount: items.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
@@ -122,7 +122,7 @@ class OtherCharactersSection extends StatelessWidget {
                               //   }
                               // }()
 
-                              shapes[index]),
+                              items[index]),
                     ),
                   );
                 },
