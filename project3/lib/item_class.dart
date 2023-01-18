@@ -102,36 +102,6 @@ class MyCarouselItem {
         "coverImages": {
           "backgroundImage": "assets/images/b1.png",
           "foregroundImage": "assets/images/f1.png",
-          "effectImage": "assets/images/e4.png",
-          "fullImage": ""
-        }
-      },
-      {
-        "title": "hulk",
-        "description": "cap",
-        "coverImages": {
-          "backgroundImage": "assets/images/b3.png",
-          "foregroundImage": "assets/images/f2.png",
-          "effectImage": "assets/images/e1.png",
-          "fullImage": ""
-        }
-      },
-      {
-        "title": "logan",
-        "description": "cap",
-        "coverImages": {
-          "backgroundImage": "assets/images/b4.png",
-          "foregroundImage": "assets/images/f3.png",
-          "effectImage": "assets/images/bb6.png",
-          "fullImage": ""
-        }
-      },
-      {
-        "title": "iron",
-        "description": "cap",
-        "coverImages": {
-          "backgroundImage": "assets/images/b5.png",
-          "foregroundImage": "assets/images/f4.png",
           "effectImage": "assets/images/e1.png",
           "fullImage": ""
         }
@@ -141,8 +111,38 @@ class MyCarouselItem {
         "description": "cap",
         "coverImages": {
           "backgroundImage": "assets/images/b2.png",
-          "foregroundImage": "assets/images/f5.png",
+          "foregroundImage": "assets/images/f2.png",
+          "effectImage": "",
+          "fullImage": ""
+        }
+      },
+      {
+        "title": "hulk",
+        "description": "cap",
+        "coverImages": {
+          "backgroundImage": "assets/images/b3.png",
+          "foregroundImage": "assets/images/f3.png",
+          "effectImage": "assets/images/e3.png",
+          "fullImage": ""
+        }
+      },
+      {
+        "title": "logan",
+        "description": "cap",
+        "coverImages": {
+          "backgroundImage": "assets/images/b4.png",
+          "foregroundImage": "assets/images/f4.png",
           "effectImage": "assets/images/e4.png",
+          "fullImage": ""
+        }
+      },
+      {
+        "title": "iron",
+        "description": "cap",
+        "coverImages": {
+          "backgroundImage": "assets/images/b5.png",
+          "foregroundImage": "assets/images/f5.png",
+          "effectImage": "",
           "fullImage": ""
         }
       },
