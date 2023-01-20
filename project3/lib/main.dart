@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project3/carousel1.dart';
 import 'package:project3/item_class.dart';
 import 'package:project3/other_characters.dart';
+import 'package:project3/page2.dart';
 import 'package:project3/shapes.dart';
 
 import 'appbar_navbar.dart';
@@ -30,22 +31,20 @@ class MyApp extends StatelessWidget {
     }
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: "avengers",
-        textButtonTheme: TextButtonThemeData(
-            style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-        )),
-      ),
-      scrollBehavior: MyCustomScrollBehavior(),
-      home: HomeScreen(
-          carouselItems: carouselsData, otherHeroesItems: otherHeroesData),
-      //     home: Page2(
-      //   selectedItem:
-      //       Container(width: 200, height: 400, color: Colors.pinkAccent),
-      // )
-    );
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: "avengers",
+          textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          )),
+        ),
+        scrollBehavior: MyCustomScrollBehavior(),
+        // home: HomeScreen(
+        //     carouselItems: carouselsData, otherHeroesItems: otherHeroesData),
+        home: Page2(
+          selectedItem: carouselsData.first,
+        ));
   }
 }
 
@@ -75,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 253, 234, 8),
         // bottomNavigationBar: const MyNavbar(),
-        // appBar: const MyAppbar(),
+        appBar: const MyAppbar(),
         body: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -87,9 +86,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ])),
           child: Column(
             children: [
-              // const GeanraSection(),
+              const GeanraSection(),
               CarouselSection(cardItems: widget.carouselItems),
-              // OtherCharactersSection(items: otherHeroesItems)
+              OtherCharactersSection(items: otherHeroesItems)
             ],
           ),
         ),

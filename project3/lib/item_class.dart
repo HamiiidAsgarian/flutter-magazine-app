@@ -5,14 +5,17 @@ class MyCarouselItem {
   final String? foregroundImageUrl;
   final String? topGroundImageUrl;
   final String? fullImage;
+  final List<String>? moreImages;
 
-  MyCarouselItem(
-      {this.titel,
-      this.description,
-      this.backgroundImageUrl,
-      this.foregroundImageUrl,
-      this.topGroundImageUrl,
-      this.fullImage});
+  MyCarouselItem({
+    this.titel,
+    this.description,
+    this.backgroundImageUrl,
+    this.foregroundImageUrl,
+    this.topGroundImageUrl,
+    this.fullImage,
+    this.moreImages,
+  });
 
   factory MyCarouselItem.fromMap(Map<String, dynamic> item) {
     String titel = item["title"];
@@ -22,6 +25,8 @@ class MyCarouselItem {
     String foregroundImageUrl = item['coverImages']["foregroundImage"];
     String topGroundImageUrl = item['coverImages']["effectImage"];
     String fullImage = item['coverImages']["fullImage"];
+    List<String> moreImages =
+        item.containsKey('moreImages') ? item["moreImages"] : [];
 
     return MyCarouselItem(
         titel: titel,
@@ -29,71 +34,72 @@ class MyCarouselItem {
         backgroundImageUrl: backgroundImageUrl,
         foregroundImageUrl: foregroundImageUrl,
         topGroundImageUrl: topGroundImageUrl,
-        fullImage: fullImage);
+        fullImage: fullImage,
+        moreImages: moreImages);
   }
 
   static Map<String, dynamic> data = {
     "otherHeroes": [
-      // {
-      //   "title": "Spiderman",
-      //   "description": "frinedlySpider",
-      //   "coverImages": {
-      //     "backgroundImage": "assets/images/b1.png",
-      //     "foregroundImage": "assets/images/f1.png",
-      //     "effectImage": "assets/images/e1.png",
-      //     "fullImage": "assets/images/i3.png"
-      //   }
-      // },
-      // {
-      //   "title": "Spiderman",
-      //   "description": "frinedlySpider",
-      //   "coverImages": {
-      //     "backgroundImage": "assets/images/b1.png",
-      //     "foregroundImage": "assets/images/f1.png",
-      //     "effectImage": "assets/images/e1.png",
-      //     "fullImage": "assets/images/i1.png"
-      //   }
-      // },
-      // {
-      //   "title": "Spiderman",
-      //   "description": "frinedlySpider",
-      //   "coverImages": {
-      //     "backgroundImage": "assets/images/b1.png",
-      //     "foregroundImage": "assets/images/f1.png",
-      //     "effectImage": "assets/images/e1.png",
-      //     "fullImage": "assets/images/i2.png"
-      //   }
-      // },
-      // {
-      //   "title": "Spiderman",
-      //   "description": "frinedlySpider",
-      //   "coverImages": {
-      //     "backgroundImage": "assets/images/b1.png",
-      //     "foregroundImage": "assets/images/f1.png",
-      //     "effectImage": "assets/images/e1.png",
-      //     "fullImage": "assets/images/i4.png"
-      //   }
-      // },
-      // {
-      //   "title": "Spiderman",
-      //   "description": "frinedlySpider",
-      //   "coverImages": {
-      //     "backgroundImage": "assets/images/b1.png",
-      //     "foregroundImage": "assets/images/f1.png",
-      //     "effectImage": "assets/images/e1.png",
-      //     "fullImage": "assets/images/i5.png"
-      //   }
-      // },
-      // {
-      //   "title": "Spiderman",
-      //   "description": "frinedlySpider",
-      //   "coverImages": {
-      //     "backgroundImage": "assets/images/b1.png",
-      //     "foregroundImage": "assets/images/f1.png",
-      //     "effectImage": "assets/images/e1.png",
-      //     "fullImage": "assets/images/i6.png"
-      //   }
-      // },
+      {
+        "title": "Spiderman",
+        "description": "frinedlySpider",
+        "coverImages": {
+          "backgroundImage": "assets/images/b1.png",
+          "foregroundImage": "assets/images/f1.png",
+          "effectImage": "assets/images/e1.png",
+          "fullImage": "assets/images/i3.png"
+        }
+      },
+      {
+        "title": "cap",
+        "description": "frinedlySpider",
+        "coverImages": {
+          "backgroundImage": "assets/images/b1.png",
+          "foregroundImage": "assets/images/f1.png",
+          "effectImage": "assets/images/e1.png",
+          "fullImage": "assets/images/i1.png"
+        }
+      },
+      {
+        "title": "hulk",
+        "description": "frinedlySpider",
+        "coverImages": {
+          "backgroundImage": "assets/images/b1.png",
+          "foregroundImage": "assets/images/f1.png",
+          "effectImage": "assets/images/e1.png",
+          "fullImage": "assets/images/i2.png"
+        }
+      },
+      {
+        "title": "logan",
+        "description": "frinedlySpider",
+        "coverImages": {
+          "backgroundImage": "assets/images/b1.png",
+          "foregroundImage": "assets/images/f1.png",
+          "effectImage": "assets/images/e1.png",
+          "fullImage": "assets/images/i4.png"
+        }
+      },
+      {
+        "title": "iron",
+        "description": "frinedlySpider",
+        "coverImages": {
+          "backgroundImage": "assets/images/b1.png",
+          "foregroundImage": "assets/images/f1.png",
+          "effectImage": "assets/images/e1.png",
+          "fullImage": "assets/images/i5.png"
+        }
+      },
+      {
+        "title": "Spiderman",
+        "description": "frinedlySpider",
+        "coverImages": {
+          "backgroundImage": "assets/images/b1.png",
+          "foregroundImage": "assets/images/f1.png",
+          "effectImage": "assets/images/e1.png",
+          "fullImage": "assets/images/i6.png"
+        }
+      },
     ],
     "carousels": [
       {
@@ -104,7 +110,12 @@ class MyCarouselItem {
           "foregroundImage": "assets/images/f1.png",
           "effectImage": "assets/images/e1.png",
           "fullImage": ""
-        }
+        },
+        "moreImages": [
+          "assets/images/spider1.png",
+          "assets/images/spider2.png",
+          "assets/images/spider3.png",
+        ]
       },
       {
         "title": "cap",

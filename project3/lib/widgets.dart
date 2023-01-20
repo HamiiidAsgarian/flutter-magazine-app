@@ -11,13 +11,13 @@ enum CardsSelectionStatus { selected, unSelected }
 class MyCustomCards extends StatefulWidget {
   const MyCustomCards(
       {super.key,
-      this.items = const [],
+      // this.items = const [],
       this.itemss = const [],
       this.currentIndex,
       this.onTap,
       this.leftOrRightResult});
 
-  final List<Widget> items;
+  // final List<Widget> items;
   final List<MyCarouselItem> itemss;
   final Function(MyCardsDragDirection)? leftOrRightResult;
   final Function(int)? currentIndex;
@@ -48,7 +48,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
   late List<Animation<double>> _rotateAnims;
 
   // late List<Widget> _items;
-  late List<Widget> _widgetedItems;
+  // late List<Widget> _widgetedItems;
 
   late List<MyCarouselItem> _itemsStackCardOrder;
 
@@ -90,9 +90,9 @@ class _MyCustomCardsState extends State<MyCustomCards>
     ];
     _rotateAnims = [_rotateAnim, _rotateAnim1, _rotateAnim2, _rotateAnim3];
 
-    _widgetedItems = widget.items;
+    // _widgetedItems = widget.items;
 
-    _itemsStackCardOrder = widget.itemss;
+    _itemsStackCardOrder = widget.itemss.map((e) => e).toList();
 
     // Container(
     //         // color: myColors[0],

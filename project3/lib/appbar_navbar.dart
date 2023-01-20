@@ -160,10 +160,7 @@ class MyAppbar extends StatelessWidget with PreferredSizeWidget {
                   )
                 ])),
           ])),
-          IconButton(
-              alignment: Alignment.topCenter,
-              onPressed: () {},
-              icon: const Icon(Icons.menu))
+          const Align(alignment: Alignment(0, -.5), child: Icon((Icons.menu)))
         ],
 
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,

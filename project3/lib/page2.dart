@@ -1,21 +1,77 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:project3/item_class.dart';
 import 'package:project3/widgets.dart';
 
 class Page2 extends StatelessWidget {
   const Page2({super.key, required this.selectedItem});
-  final Widget selectedItem;
+  final MyCarouselItem selectedItem;
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: MyCarousel2(),
-    );
+    print(selectedItem.titel);
+    return Scaffold(
+        body: CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          pinned: true,
+          floating: false,
+          // backgroundColor: Colors.greenAccent,
+          flexibleSpace: FlexibleSpaceBar(
+            title: Stack(children: [
+              Container(
+                  // color: Colors.brown,
+                  child: const Align(
+                      alignment: Alignment(-.1, 1),
+                      child: FlutterLogo(
+                        size: 200,
+                      )))
+            ]),
+            background: Container(
+              decoration: BoxDecoration(
+                  color: Colors.red,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage(selectedItem.moreImages![0]))),
+              child: Container(
+                  width: 20,
+                  child: MyCarousel2(
+                    items: selectedItem.moreImages ?? [],
+                    onChange: (pageIndex) {},
+                  )),
+            ),
+          ),
+          leading: const Icon(Icons.arrow_back_ios),
+          // title: Text("data"),
+          expandedHeight: 500,
+        ),
+        // SliverToBoxAdapter(child: Container(child: const MyCarousel2())),
+        // SliverToBoxAdapter(child: Container(child: const MyCarousel2())),
+        // SliverToBoxAdapter(child: Container(child: const MyCarousel2())),
+        // SliverToBoxAdapter(child: Container(child: const MyCarousel2()))
+      ],
+    )
+
+        // body: Column(
+        //   children: [
+        //     const SliverAppBar(
+        //       expandedHeight: 500,
+        //       flexibleSpace: FlexibleSpaceBar(
+        //         title: Text("data"),
+        //       ),
+        //     ),
+        //     MyCarousel2(),
+        //   ],
+        // ),
+        );
   }
 }
 
 class MyCarousel2 extends StatefulWidget {
-  const MyCarousel2({super.key});
+  const MyCarousel2({super.key, required this.onChange, required this.items});
+
+  final Function(int pageIndex) onChange;
+  final List<String> items;
 
   @override
   State<MyCarousel2> createState() => _MyCarousel2State();
@@ -37,6 +93,9 @@ class _MyCarousel2State extends State<MyCarousel2>
   final double _cardsTravelDestence = 30;
   final double widthSize = double.infinity;
 
+  List<String> _items = [];
+  List<Widget> rawItems = [];
+
   @override
   void initState() {
     _mainAnimCntrl = AnimationController(
@@ -56,6 +115,21 @@ class _MyCarousel2State extends State<MyCarousel2>
         .animate(CurvedAnimation(
             parent: _mainAnimCntrl, curve: const Interval(0.5, 1.0)));
 
+    _items = widget.items.map((e) => e).toList();
+
+    rawItems = _items
+        .map(
+          (String e) => Container(
+            decoration: BoxDecoration(
+                color: Colors.pinkAccent,
+                image: DecorationImage(fit: BoxFit.fill, image: AssetImage(e))),
+            width: 400,
+            height: 400,
+            child: Text(e),
+          ),
+        )
+        .toList();
+
     super.initState();
   }
 
@@ -67,29 +141,30 @@ class _MyCarousel2State extends State<MyCarousel2>
 
   MyCardsDragDirection _dragDirection =
       MyCardsDragDirection.right; //just an initial value to not be null
-  List<Widget> rawItems = [
-    Container(
-      width: 400,
-      height: 400,
-      color: Colors.pinkAccent,
-      child: const Text("1"),
-    ),
-    Container(
-        width: 400,
-        height: 400,
-        color: Colors.lightGreenAccent,
-        child: const Text("2")),
-    Container(
-        width: 400,
-        height: 400,
-        color: Colors.blueAccent,
-        child: const Text("3")),
-    Container(
-        width: 400,
-        height: 400,
-        color: Colors.yellowAccent,
-        child: const Text("4")),
-  ];
+
+  //  [
+  //   Container(
+  //     width: 400,
+  //     height: 400,
+  //     color: Colors.pinkAccent,
+  //     child: const Text("1"),
+  //   ),
+  //   Container(
+  //       width: 400,
+  //       height: 400,
+  //       color: Colors.lightGreenAccent,
+  //       child: const Text("2")),
+  //   Container(
+  //       width: 400,
+  //       height: 400,
+  //       color: Colors.blueAccent,
+  //       child: const Text("3")),
+  //   Container(
+  //       width: 400,
+  //       height: 400,
+  //       color: Colors.yellowAccent,
+  //       child: const Text("4")),
+  // ];
 
   @override
   Widget build(BuildContext context) {

@@ -67,62 +67,7 @@ class OtherCharactersSection extends StatelessWidget {
                           // color: Colors.black.withOpacity(.1),
                           width: 150,
                           // height: 100,
-                          child:
-                              // () {
-                              //   print(index);
-
-                              //   if (index == 0) {
-                              //     return CustomPaint(
-                              //         painter: Shape1(color: Colors.black),
-                              //         child: ClipPath(
-                              //             clipper: Clip1(),
-                              //             child: Transform.scale(
-                              //               scale: 1.5,
-                              //               child: Image.asset(
-                              //                 "images/l1.png",
-                              //                 fit: BoxFit.fill,
-                              //               ),
-                              //             )));
-                              //   } else if (modulo(index + 1, 2) == 0) {
-                              //     return CustomPaint(
-                              //         painter: Shape2(color: Colors.black),
-                              //         child: ClipPath(
-                              //             clipper: Clip2(),
-                              //             child: Transform.scale(
-                              //               scale: 1.5,
-                              //               child: Image.asset(
-                              //                 "images/l1.png",
-                              //                 fit: BoxFit.fill,
-                              //               ),
-                              //             )));
-                              //   } else if (modulo(index + 1, 3) == 0) {
-                              //     return CustomPaint(
-                              //         painter: Shape3(color: Colors.black),
-                              //         child: ClipPath(
-                              //             clipper: Clip3(),
-                              //             child: Transform.scale(
-                              //               scale: 1.5,
-                              //               child: Image.asset(
-                              //                 "images/l1.png",
-                              //                 fit: BoxFit.fill,
-                              //               ),
-                              //             )));
-                              //   } else if (modulo(index + 1, 5) == 0) {
-                              //     return CustomPaint(
-                              //         painter: Shape5(color: Colors.black),
-                              //         child: ClipPath(
-                              //             clipper: Clip5(),
-                              //             child: Transform.scale(
-                              //               scale: 1.5,
-                              //               child: Image.asset(
-                              //                 "images/l1.png",
-                              //                 fit: BoxFit.fill,
-                              //               ),
-                              //             )));
-                              //   }
-                              // }()
-
-                              items[index]),
+                          child: items[index]),
                     ),
                   );
                 },

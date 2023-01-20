@@ -72,6 +72,11 @@ flutter:
     - assets/images/e1.png
     - assets/images/c1.png
 
+    - assets/images/spider1.png
+    - assets/images/spider2.png
+    - assets/images/spider3.png
+
+
 
     - assets/images/b2.png
     - assets/images/f2.png
@@ -119,11 +124,14 @@ flutter:
     # - assets/images/navb.png
 
     - assets/images/dotpattern.png
+    - assets/images/selctednav.png
+
     # - assets/images/selctednav.png
     
     - assets/images/home.png
     - assets/images/heart.png
     - assets/images/search.png
+
 
 
 

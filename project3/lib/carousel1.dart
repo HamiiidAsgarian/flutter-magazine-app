@@ -17,6 +17,7 @@ class CarouselSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("{** -${cardItems[0].titel}}");
     return Expanded(
         flex: 3,
         child: Padding(
@@ -103,8 +104,7 @@ class Carousel1 extends StatefulWidget {
   State<Carousel1> createState() => _Carousel1State();
 }
 
-class _Carousel1State extends State<Carousel1>
-    with SingleTickerProviderStateMixin {
+class _Carousel1State extends State<Carousel1> {
   // static final List myColors = [
   //   Colors.white.withOpacity(0),
   //   Colors.white.withOpacity(0),
@@ -119,7 +119,8 @@ class _Carousel1State extends State<Carousel1>
 
   @override
   void initState() {
-    print(widget.items.length);
+    print("9999");
+    // print(widget.items.length);
     // _animCntrl1 = AnimationController(
     //     vsync: this, duration: const Duration(milliseconds: 400));
 
@@ -128,41 +129,43 @@ class _Carousel1State extends State<Carousel1>
     super.initState();
   }
 
-  static const double _cardWith = 400;
-  static const double _cardHeight = 400;
+  // static const double _cardWith = 400;
+  // static const double _cardHeight = 400;
 
   bool test = false;
   int _selectedIndex = 1;
   @override
   Widget build(BuildContext context) {
-    final List<Widget> widgetedItems = widget.items
-        .map(
-          (e) => SizedBox(
-            // color: myColors[0],
-            width: _cardWith,
-            height: _cardHeight,
-            child: Image.asset(e.backgroundImageUrl ?? ""),
-          ),
-        )
-        .toList();
+    // final List<Widget> widgetedItems = widget.items
+    //     .map(
+    //       (e) => SizedBox(
+    //         // color: myColors[0],
+    //         width: _cardWith,
+    //         height: _cardHeight,
+    //         child: Image.asset(e.backgroundImageUrl ?? ""),
+    //       ),
+    //     )
+    //     .toList();
 
     log("bild");
+
+    // print("1- ${widget.items[0].titel}");
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       child: MyCustomCards(
         itemss: widget.items,
-        currentIndex: (p0) {
+        currentIndex: (index) {
           setState(() {
-            _selectedIndex = p0;
+            _selectedIndex = index - 1;
           });
         },
-        items: widgetedItems,
+        // items: widgetedItems,
         onTap: (status) {
           Navigator.push(
               context,
               PageRouteBuilder(
                 pageBuilder: ((context, animation, secondaryAnimation) {
-                  return Page2(selectedItem: widgetedItems[_selectedIndex]);
+                  return Page2(selectedItem: widget.items[_selectedIndex]);
                 }),
                 transitionDuration: const Duration(seconds: 1),
                 reverseTransitionDuration: Duration.zero,
