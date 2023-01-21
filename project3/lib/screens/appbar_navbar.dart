@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project3/shapes.dart';
+import 'package:project3/widgets/shapes.dart';
 
 class MyNavbar extends StatelessWidget {
   const MyNavbar({

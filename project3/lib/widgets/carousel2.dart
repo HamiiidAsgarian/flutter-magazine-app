@@ -1,71 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:project3/item_class.dart';
-import 'package:project3/widgets.dart';
+import 'package:project3/widgets/widgets.dart';
 
-class Page2 extends StatelessWidget {
-  const Page2({super.key, required this.selectedItem});
-  final MyCarouselItem selectedItem;
-  @override
-  Widget build(BuildContext context) {
-    print(selectedItem.titel);
-    return Scaffold(
-        body: CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          pinned: true,
-          floating: false,
-          // backgroundColor: Colors.greenAccent,
-          flexibleSpace: FlexibleSpaceBar(
-            title: Stack(children: [
-              Container(
-                  // color: Colors.brown,
-                  child: const Align(
-                      alignment: Alignment(-.1, 1),
-                      child: FlutterLogo(
-                        size: 200,
-                      )))
-            ]),
-            background: Container(
-              decoration: BoxDecoration(
-                  color: Colors.red,
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage(selectedItem.moreImages![0]))),
-              child: Container(
-                  width: 20,
-                  child: MyCarousel2(
-                    items: selectedItem.moreImages ?? [],
-                    onChange: (pageIndex) {},
-                  )),
-            ),
-          ),
-          leading: const Icon(Icons.arrow_back_ios),
-          // title: Text("data"),
-          expandedHeight: 500,
-        ),
-        // SliverToBoxAdapter(child: Container(child: const MyCarousel2())),
-        // SliverToBoxAdapter(child: Container(child: const MyCarousel2())),
-        // SliverToBoxAdapter(child: Container(child: const MyCarousel2())),
-        // SliverToBoxAdapter(child: Container(child: const MyCarousel2()))
-      ],
-    )
-
-        // body: Column(
-        //   children: [
-        //     const SliverAppBar(
-        //       expandedHeight: 500,
-        //       flexibleSpace: FlexibleSpaceBar(
-        //         title: Text("data"),
-        //       ),
-        //     ),
-        //     MyCarousel2(),
-        //   ],
-        // ),
-        );
-  }
-}
+import 'dart:developer' as developer;
 
 class MyCarousel2 extends StatefulWidget {
   const MyCarousel2({super.key, required this.onChange, required this.items});
@@ -93,7 +31,7 @@ class _MyCarousel2State extends State<MyCarousel2>
   final double _cardsTravelDestence = 30;
   final double widthSize = double.infinity;
 
-  List<String> _items = [];
+  // List<String> _items = [];
   List<Widget> rawItems = [];
 
   @override
@@ -115,17 +53,18 @@ class _MyCarousel2State extends State<MyCarousel2>
         .animate(CurvedAnimation(
             parent: _mainAnimCntrl, curve: const Interval(0.5, 1.0)));
 
-    _items = widget.items.map((e) => e).toList();
+    // _items = widget.items.map((e) => e).toList();
 
-    rawItems = _items
+    rawItems = widget.items //* converting item class data to widgets
         .map(
           (String e) => Container(
             decoration: BoxDecoration(
-                color: Colors.pinkAccent,
+                borderRadius: BorderRadius.circular(5),
+                // color: Colors.pinkAccent,
                 image: DecorationImage(fit: BoxFit.fill, image: AssetImage(e))),
-            width: 400,
+            width: 300,
             height: 400,
-            child: Text(e),
+            // child: Text(e),
           ),
         )
         .toList();
@@ -142,46 +81,25 @@ class _MyCarousel2State extends State<MyCarousel2>
   MyCardsDragDirection _dragDirection =
       MyCardsDragDirection.right; //just an initial value to not be null
 
-  //  [
-  //   Container(
-  //     width: 400,
-  //     height: 400,
-  //     color: Colors.pinkAccent,
-  //     child: const Text("1"),
-  //   ),
-  //   Container(
-  //       width: 400,
-  //       height: 400,
-  //       color: Colors.lightGreenAccent,
-  //       child: const Text("2")),
-  //   Container(
-  //       width: 400,
-  //       height: 400,
-  //       color: Colors.blueAccent,
-  //       child: const Text("3")),
-  //   Container(
-  //       width: 400,
-  //       height: 400,
-  //       color: Colors.yellowAccent,
-  //       child: const Text("4")),
-  // ];
+  int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Center(
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            FloatingActionButton(onPressed: () {
-              // onDragRight();
-              onDrag(MyCardsDragDirection.left);
-            }),
-            FloatingActionButton(onPressed: () {
-              onDrag(MyCardsDragDirection.right);
-              // onDragLeft();
-            }),
-          ]),
-        ),
+        // Center(
+        //   child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        //     // FloatingActionButton(onPressed: () {
+        //     //   // onDragRight();
+        //     //   onDrag(MyCardsDragDirection.left);
+        //     // }),
+        //     // FloatingActionButton(onPressed: () {
+        //     //   onDrag(MyCardsDragDirection.right);
+        //     //   // onDragLeft();
+        //     // }),
+        //   ]),
+        // ),
         Center(child: _carsGenerator()),
       ],
     );
@@ -200,7 +118,6 @@ class _MyCarousel2State extends State<MyCarousel2>
         int nextCardIndex = _dragDirection == MyCardsDragDirection.right
             ? rawItems.length - 1
             : 1;
-
         return Stack(
           children: [
             MyCard2(
@@ -210,13 +127,13 @@ class _MyCarousel2State extends State<MyCarousel2>
                 child: rawItems[nextCardIndex]),
             GestureDetector(
               //Top Card is touch sensetive
-              onHorizontalDragEnd: (e) {
-                print(e.primaryVelocity);
+              onHorizontalDragEnd: (e) async {
                 if (e.primaryVelocity! > 0) {
-                  onDrag(MyCardsDragDirection.left);
+                  await onDrag(MyCardsDragDirection.left);
                 } else {
-                  onDrag(MyCardsDragDirection.right);
+                  await onDrag(MyCardsDragDirection.right);
                 }
+                widget.onChange(currentIndex);
               },
               child: MyCard2(
                   myConditionAnim1: myConditionAnim1,
@@ -269,30 +186,40 @@ class _MyCarousel2State extends State<MyCarousel2>
     setState(() {
       _dragDirection = direction;
     });
-    print(_dragDirection);
     await _mainAnimCntrl.forward();
     _mainAnimCntrl.reset();
 
     if (direction == MyCardsDragDirection.left) {
-      print("left");
-
       setState(() {
         Widget temp = rawItems.first;
 
         rawItems.removeAt(0);
         rawItems.add(temp);
       });
+
+      //* index calculation when draged left
+      if (currentIndex < rawItems.length - 1) {
+        currentIndex++;
+      } else {
+        currentIndex = (rawItems.length - 1) - currentIndex;
+      }
     } else {
-      print("right");
       setState(() {
         Widget temp = rawItems.last;
 
         rawItems.removeLast();
         rawItems.insert(0, temp);
+
+        //* index calculation when draged right
+        if (currentIndex > 0) {
+          currentIndex--;
+        } else {
+          currentIndex = (rawItems.length - 1);
+        }
       });
     }
 
-    // direction == MyCardsDragDirection.left ? onDragLeft() : onDragRight();
+    developer.log("$_dragDirection to index $currentIndex");
   }
 }
 

@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:project3/item_class.dart';
-import 'package:project3/page2.dart';
-import 'package:project3/widgets.dart';
+import 'package:project3/screens/page2.dart';
+import 'package:project3/widgets/widgets.dart';
 
 import 'dart:developer';
 
