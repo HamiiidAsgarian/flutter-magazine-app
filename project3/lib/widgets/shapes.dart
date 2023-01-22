@@ -244,6 +244,42 @@ class NavbarShape extends CustomPainter {
   }
 }
 
+class FavoriteOptions extends CustomPainter {
+  final Color? color;
+
+  FavoriteOptions({this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Path path = Path();
+
+    // path.lineTo(size.width, 0);
+    path.lineTo(0, 0);
+    // path.lineTo(size.width - (size.width * .05), size.height * .5);
+    path.lineTo(size.width * .1, size.height * .5);
+
+    path.lineTo(0, size.height);
+
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0);
+
+    path.close();
+
+    Paint paint0Fill = Paint();
+    canvas.drawPath(
+        path,
+        paint0Fill
+          ..style = PaintingStyle.stroke
+          ..strokeJoin = StrokeJoin.round
+          ..strokeWidth = 2
+          ..color = color ?? Colors.pink);
+  }
+
+  @override
+  bool shouldRepaint(covariant FavoriteOptions oldDelegate) {
+    return true;
+  }
+}
 //------------------------------------------------------------------------------!SECTION
 
 class NavbarClip extends CustomClipper<Path> {
