@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:project3/item_class.dart';
 import 'package:project3/screens/page2.dart';
+import 'package:project3/screens/page_home.dart';
 
 main() {
   runApp(const MyApp());
@@ -37,8 +38,9 @@ class MyApp extends StatelessWidget {
         scrollBehavior: MyCustomScrollBehavior(),
         // home: HomeScreen(
         //     carouselItems: carouselsData, otherHeroesItems: otherHeroesData),
-        home: Page2(
-          selectedItem: carouselsData.first,
+        home: HomeScreen(
+          carouselItems: carouselsData,
+          otherHeroesItems: otherHeroesData,
         ));
   }
 }

@@ -72,11 +72,21 @@ flutter:
     - assets/images/e1.png
     - assets/images/c1.png
 
-    - assets/images/spider1.png
-    - assets/images/spider2.png
-    - assets/images/spider3.png
+    - assets/images/screen2/spider1.png
+    - assets/images/screen2/spider2.png
+    - assets/images/screen2/spider3.png
+    - assets/images/screen2/spider4.png
 
-    - assets/images/spiderLogo.png
+
+    - assets/images/screen2/spiderLogo.png
+    
+    - assets/images/screen2/related1.png
+    - assets/images/screen2/related2.png
+    - assets/images/screen2/related3.png
+    - assets/images/screen2/related4.png
+    - assets/images/screen2/related5.png
+    - assets/images/screen2/related6.png
+
 
 
 

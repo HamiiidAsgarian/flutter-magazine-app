@@ -17,79 +17,76 @@ class CarouselSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("{** -${cardItems[0].titel}}");
     return Expanded(
         flex: 3,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-            // color: Colors.green,
-            child: Stack(
-              clipBehavior: Clip.none,
-              // padding: EdgeInsets.symmetric(horizontal: 25),
-              children: [
-                Container(
-                  // color: Colors.blue,
-                  margin: const EdgeInsets.only(top: 0),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Transform(
-                      transform: Matrix4(
-                        1, -.11, 0, 0.0, //
-                        0, 1, 0, 0, //
-                        0, 0, 1, 0, //
-                        0, 0, 0, 1,
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            image: const DecorationImage(
-                              image: ExactAssetImage('assets/images/bb6.png'),
-                              fit: BoxFit.cover,
-                            ),
-                            border: Border.all(width: 3),
-                            borderRadius: BorderRadius.circular(3)),
-                        child: ClipRRect(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 010, sigmaY: 010),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.0)),
-                            ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            // padding: EdgeInsets.symmetric(horizontal: 25),
+            children: [
+              Container(
+                // color: Colors.blue,
+                margin: const EdgeInsets.only(top: 0),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Transform(
+                    transform: Matrix4(
+                      1, -.11, 0, 0.0, //
+                      0, 1, 0, 0, //
+                      0, 0, 1, 0, //
+                      0, 0, 0, 1,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          image: const DecorationImage(
+                            image: ExactAssetImage(
+                                'assets/images/bb6.png'), //Defult blures background
+                            fit: BoxFit.cover,
+                          ),
+                          border: Border.all(width: 3),
+                          borderRadius: BorderRadius.circular(3)),
+                      child: ClipRRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 010, sigmaY: 010),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.0)),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment(.0, -1),
-                  // top: -0,
-                  // right: 10,
-                  // alignment: Alignment.topLeft,
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        top: 12.5, bottom: 10, left: 10, right: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: const Color.fromARGB(255, 255, 243, 110),
-                        border: Border.all(
-                            width: 3,
-                            color: const Color.fromARGB(255, 22, 22, 22))),
-                    // width: 150,
-                    // height: 50,
-                    child: const Text(
-                      "Today's Heroes",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 15),
-                    ),
+              ),
+              Align(
+                alignment: const Alignment(.0, -1),
+                // top: -0,
+                // right: 10,
+                // alignment: Alignment.topLeft,
+                child: Container(
+                  padding: const EdgeInsets.only(
+                      top: 12.5, bottom: 10, left: 10, right: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 255, 243, 110),
+                      border: Border.all(
+                          width: 3,
+                          color: const Color.fromARGB(255, 22, 22, 22))),
+                  // width: 150,
+                  // height: 50,
+                  child: const Text(
+                    "Today's Heroes",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 15),
                   ),
                 ),
-                Container(
-                    margin: const EdgeInsets.only(bottom: 30),
-                    padding: const EdgeInsets.symmetric(vertical: 60),
-                    child: Carousel1(items: cardItems)),
-              ],
-            ),
+              ),
+              Container(
+                  margin: const EdgeInsets.only(bottom: 30),
+                  padding: const EdgeInsets.symmetric(vertical: 60),
+                  child: Carousel1(items: cardItems)),
+            ],
           ),
         ));
   }
@@ -119,7 +116,6 @@ class _Carousel1State extends State<Carousel1> {
 
   @override
   void initState() {
-    print("9999");
     // print(widget.items.length);
     // _animCntrl1 = AnimationController(
     //     vsync: this, duration: const Duration(milliseconds: 400));
@@ -132,7 +128,7 @@ class _Carousel1State extends State<Carousel1> {
   // static const double _cardWith = 400;
   // static const double _cardHeight = 400;
 
-  bool test = false;
+  // bool test = false;
   int _selectedIndex = 1;
   @override
   Widget build(BuildContext context) {
@@ -161,15 +157,17 @@ class _Carousel1State extends State<Carousel1> {
         },
         // items: widgetedItems,
         onTap: (status) {
-          Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: ((context, animation, secondaryAnimation) {
-                  return Page2(selectedItem: widget.items[_selectedIndex]);
-                }),
-                transitionDuration: const Duration(seconds: 1),
-                reverseTransitionDuration: Duration.zero,
-              ));
+          print(_selectedIndex);
+          // await Future.delayed(Duration(seconds: 1));
+          // Navigator.push(
+          //     context,
+          //     PageRouteBuilder(
+          //       pageBuilder: ((context, animation, secondaryAnimation) {
+          //         return Page2(selectedItem: widget.items[_selectedIndex - 1]);
+          //       }),
+          //       transitionDuration: const Duration(seconds: 1),
+          //       reverseTransitionDuration: Duration.zero,
+          //     )).then((value) {});
         },
       ),
     );

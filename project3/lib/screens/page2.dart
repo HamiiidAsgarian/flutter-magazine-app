@@ -10,6 +10,8 @@ class Page2 extends StatefulWidget {
   const Page2({super.key, required this.selectedItem});
   final MyCarouselItem selectedItem;
 
+  // static final Color _mainRed = Colors.white;
+
   @override
   State<Page2> createState() => _Page2State();
 }
@@ -21,6 +23,8 @@ class _Page2State extends State<Page2> {
 
   @override
   void initState() {
+    // _mainRed = selectedItem.themeColor??Colors.white;
+
     _dynamicBackgroundImage =
         // FlutterLogo(
         //   size: 200,
@@ -51,11 +55,15 @@ class _Page2State extends State<Page2> {
           //     color: Colors.pink,
           //   ),
           // ),
-          backgroundColor: Colors.red.withOpacity(1),
+          backgroundColor: widget.selectedItem.themeColor,
           leading: Container(
             // color: Colors.green,
             padding: const EdgeInsets.only(right: 0, top: 0),
-            child: const Icon(Icons.arrow_back_ios),
+            child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back_ios)),
           ),
           actions: [
             Container(
@@ -75,7 +83,7 @@ class _Page2State extends State<Page2> {
                 width: double.infinity,
                 // height: double.infinity,
                 decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(1),
+                    color: widget.selectedItem.themeColor,
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(50),
                         topRight: Radius.circular(50))),
@@ -87,7 +95,7 @@ class _Page2State extends State<Page2> {
                     duration: const Duration(seconds: 1),
                     child: SizedBox(
                       // width: 300,
-                      child: Image.asset("assets/images/spiderLogo.png",
+                      child: Image.asset(widget.selectedItem.logoUrl ?? "",
                           fit: BoxFit.fill),
                     ))),
             background: Stack(
@@ -103,27 +111,45 @@ class _Page2State extends State<Page2> {
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 010, sigmaY: 010),
                       child: Container(
-                          margin: const EdgeInsets.only(bottom: 50, top: 25),
-                          width: 20,
-                          child: MyCarousel2(
-                            items: widget.selectedItem.moreImages ?? [],
-                            onChange: (pageIndex) {
-                              print("**** $pageIndex");
+                          margin: const EdgeInsets.only(bottom: 70),
+                          // width: 20,
+                          child: Hero(
+                            tag: 'hero1',
+                            child: MyCarousel2(
+                              items: widget.selectedItem.moreImages ?? [],
+                              onChange: (pageIndex) {
+                                print("* $pageIndex");
 
-                              setState(() {
-                                carouselIndex = pageIndex;
-                                _dynamicBackgroundImage = SizedBox.expand(
-                                    key: Key(carouselIndex.toString()),
-                                    child: Image.asset(
-                                      widget.selectedItem
-                                          .moreImages![carouselIndex],
-                                      fit: BoxFit.fill,
-                                    ));
-                              });
-                            },
+                                setState(() {
+                                  carouselIndex = pageIndex;
+                                  _dynamicBackgroundImage = SizedBox.expand(
+                                      key: Key(carouselIndex.toString()),
+                                      child: Image.asset(
+                                        widget.selectedItem
+                                            .moreImages![carouselIndex],
+                                        fit: BoxFit.fill,
+                                      ));
+                                });
+                              },
+                            ),
                           )),
                     ),
                   ),
+                ),
+                Align(
+                  alignment: const Alignment(0, .65),
+                  child: Container(
+                      margin: const EdgeInsets.only(bottom: 15),
+                      child: SizedBox(
+                        // width: 500,
+                        height: 20,
+                        // color: widget.selectedItem.themeColor!.withOpacity(.5),
+                        child: MyCarouselPointer(
+                          carouselIndex: carouselIndex,
+                          carouselLength:
+                              widget.selectedItem.moreImages!.length,
+                        ),
+                      )),
                 ),
               ],
             ),
@@ -133,60 +159,53 @@ class _Page2State extends State<Page2> {
         ),
         SliverToBoxAdapter(
           child: Container(
-            color: Colors.red,
+            color: widget.selectedItem.themeColor,
             child: Column(
               children: [
-                Container(
-                  child: Text(
-                    "Marvel - Avengers",
-                    style: TextStyle(
-                      foreground: Paint()
-                        ..style = PaintingStyle.stroke
-                        ..strokeWidth = 1
-                        ..color = Colors.white,
-                      fontSize: 25,
-                      // color: Colors.white,
-                    ),
+                Text(
+                  widget.selectedItem.category ?? "",
+                  style: TextStyle(
+                    foreground: Paint()
+                      ..style = PaintingStyle.stroke
+                      ..strokeWidth = 1
+                      ..color = Colors.white,
+                    fontSize: 25,
+                    // color: Colors.white,
                   ),
                 ),
                 Container(
                     padding:
                         const EdgeInsets.only(top: 15, bottom: 15, left: 25),
                     // height: 50,
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
+                    decoration: BoxDecoration(
+                      color: widget.selectedItem.themeColor,
                     ),
                     child: CustomPaint(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            // padding: EdgeInsets.all(5),
-                            // color: Colors.green,
-                            // height: 25,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                ...List.generate(
-                                    1,
-                                    ((index) => const Padding(
-                                          padding: EdgeInsets.only(bottom: 5),
-                                          child: Icon(
-                                            Icons.star_rounded,
-                                            color: Colors.amber,
-                                            size: 30,
-                                          ),
-                                        ))),
-                                const Text(
-                                  "4.8",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: Colors.white,
-                                  ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ...List.generate(
+                                  1,
+                                  ((index) => const Padding(
+                                        padding: EdgeInsets.only(bottom: 5),
+                                        child: Icon(
+                                          Icons.star_rounded,
+                                          color: Colors.amber,
+                                          size: 30,
+                                        ),
+                                      ))),
+                              Text(
+                                (widget.selectedItem.rate ?? "NA").toString(),
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  color: Colors.white,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                           SizedBox(
                             // color: Colors.white,
@@ -226,38 +245,32 @@ class _Page2State extends State<Page2> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   width: double.infinity,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Colors.red, Colors.red.withOpacity(.2)])),
-                  // height: double.infinity,
-                  // color: Colors.red.withOpacity(.2),
+                  color: widget.selectedItem.themeColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         padding: const EdgeInsets.only(top: 25, bottom: 5),
-                        child: const Text(
-                          "Peter parker - Earth 616",
-                          style: TextStyle(
+                        child: Text(
+                          widget.selectedItem.name ?? "",
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 23,
                               letterSpacing: 1.4),
                         ),
                       ),
                       Text(
-                        'Stan Lee, Larry, Don kerky',
+                        widget.selectedItem.author ?? "",
                         style: TextStyle(
                           color: Colors.white.withOpacity(.8),
                           fontSize: 10,
                           letterSpacing: 1.4,
                         ),
                       ),
-                      SizedBox(height: 15),
-                      const Text(
-                        'Tony escaped death by reconfiguring his body with a digital back-up of his mind,[54] inadvertently causing him to become temporarily convinced that he was a clone of the real, late Tony Stark.[55] This resulted in Tony leading an army of artificial-life forms in a war against the anti-A.I. campaign of his adoptive brother Arno.[1] After coming around to the fact that he was the real Tony Stark all along, Tony stopped Arno\'s deranged plan to enslave humanity to stop a non-existent alien threat,[56] and he then opted to embark on a journey of self-discovery to escape the baggage of his career. Stepping away from his high-tech lifestyle, Tony finds himself returning to his roots in an attempt to put back the "man" in Iron Man.[57]',
-                        style: TextStyle(
+                      const SizedBox(height: 15),
+                      Text(
+                        widget.selectedItem.paragraph1 ?? "",
+                        style: const TextStyle(
                             color: Colors.white,
                             fontFamily: "arial",
                             fontSize: 12,
@@ -265,89 +278,93 @@ class _Page2State extends State<Page2> {
                         overflow: TextOverflow.clip,
                         textAlign: TextAlign.justify,
                       ),
-                      Container(
-                        // height: 100,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding:
-                                  const EdgeInsets.only(top: 25, bottom: 5),
-                              child: const Text(
-                                "Related Characters",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 23,
-                                    letterSpacing: 1.4),
-                              ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(top: 25, bottom: 5),
+                            child: const Text(
+                              "Related Characters",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 23,
+                                  letterSpacing: 1.4),
                             ),
-                            Container(
-                              height: 125,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: widget.selectedItem.moreImages!
-                                    .map((e) => Container(
-                                          margin: EdgeInsets.only(right: 25),
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                width: 100,
-                                                height: 100,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.blue,
-                                                    image: DecorationImage(
-                                                        fit: BoxFit.fill,
-                                                        image: AssetImage(
-                                                          e,
-                                                        )),
-                                                    shape: BoxShape.circle),
-                                              ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 10),
-                                                width: 100,
-                                                // color: Colors.green,
-                                                child: Center(
-                                                  child: Text(
-                                                    e,
-                                                    style: TextStyle(
-                                                        color: Colors.white
-                                                            .withOpacity(.8),
-                                                        fontSize: 10,
-                                                        letterSpacing: 1.4,
-                                                        overflow: TextOverflow
-                                                            .ellipsis),
-                                                  ),
+                          ),
+                          SizedBox(
+                            height: 125,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: widget.selectedItem.relatedCharacters!
+                                  .map((e) => Container(
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              width: 100,
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      width: 3,
+                                                      color: Colors.white),
+                                                  color: widget
+                                                      .selectedItem.themeColor,
+                                                  image: DecorationImage(
+                                                      fit: BoxFit.fill,
+                                                      image: AssetImage(
+                                                        e.imageUrl,
+                                                      )),
+                                                  shape: BoxShape.circle),
+                                            ),
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  top: 10),
+                                              width: 100,
+                                              // color: Colors.green,
+                                              child: Center(
+                                                child: Text(
+                                                  e.name,
+                                                  style: TextStyle(
+                                                      color: Colors.white
+                                                          .withOpacity(.8),
+                                                      fontSize: 10,
+                                                      letterSpacing: 1.4,
+                                                      overflow: TextOverflow
+                                                          .ellipsis),
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ))
+                                  .toList(),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       Container(
                         padding: const EdgeInsets.only(top: 25, bottom: 5),
-                        child: const Text(
-                          "Birth and Adoption",
-                          style: TextStyle(
+                        child: Text(
+                          widget.selectedItem.title2 ?? "",
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 23,
                               letterSpacing: 1.4),
                         ),
                       ),
-                      const Text(
-                        'Anthony Edward Stark, also known as Tony Stark, was born to two S.H.I.E.L.D  agents, Amanda Armstrong and Jude. Jude was a secret Hydra double-agent with little regard for anybody but himself and regularly sold out fellow S.H.I.E.L.D. operatives. He was almost responsible for Amanda\'s own death at the hands of an assassin. However, he fell in love with Amanda before sending her to her death and decided to save her.[58] After this incident they got to know each other and began a relationship.[59] Two years later, Amanda became pregnant. A week before giving birth to the baby, Jude decided to reveal his true allegiance to Amanda and its implications in Jude\'s timely intervention that saved her life. The subsequent discussion escalated, and Amanda killed Jude. Traumatized by this development, Amanda asked S.H.I.E.L.D. to ensure her future baby would find a safe and happy home. However, director Nick Fury followed the same procedure used for unwanted pregnancies in the agency, and the baby was left in an orphanage in Sofia, Bulgaria after Amanda birthed him in a local hospital. Fury\'s associate and famous industrialist Howard Stark learned of this and decided to find the baby and adopt him, keeping the name Amanda wished he retained: Anthony.[58] In addition to Howard and his wife Maria suffering the latter\'s inability to give birth again,[59] they needed to find a healthy boy to act as a decoy in place of their secret firstborn, Arno Stark. Arno\'s gestation had been extremely difficult, and his birth was only made possible with the help of an alien robot, the Rigellian Recorder 451, who had agreed to help the baby survive in exchange for the opportunity to bioengineer him, so he could accelerate humanity\'s technological growth in the future.[60]',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "arial",
-                            fontSize: 12,
-                            letterSpacing: 1.4),
-                        overflow: TextOverflow.clip,
-                        textAlign: TextAlign.justify,
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 25),
+                        child: Text(
+                          widget.selectedItem.paragraph2 ?? "",
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontFamily: "arial",
+                              fontSize: 12,
+                              letterSpacing: 1.4),
+                          overflow: TextOverflow.clip,
+                          textAlign: TextAlign.justify,
+                        ),
                       ),
                     ],
                   ),
@@ -356,34 +373,69 @@ class _Page2State extends State<Page2> {
             ),
           ),
         ),
-
-        // ...['1', '2', '3']
-        //     .map((e) => const SliverToBoxAdapter(
-        //             child: SizedBox(
-        //           height: 500,
-        //           child: FlutterLogo(
-        //             size: 200,
-        //           ),
-        //         )))
-        //     .toList()
-        // SliverToBoxAdapter(child: Container(child:  MyCarousel2())),
-        // SliverToBoxAdapter(child: Container(child:  MyCarousel2())),
-        // SliverToBoxAdapter(child: Container(child:  MyCarousel2())),
-        // SliverToBoxAdapter(child: Container(child:  MyCarousel2()))
       ],
-    )
+    ));
+  }
+}
 
-        // body: Column(
-        //   children: [
-        //     const SliverAppBar(
-        //       expandedHeight: 500,
-        //       flexibleSpace: FlexibleSpaceBar(
-        //         title: Text("data"),
-        //       ),
-        //     ),
-        //     MyCarousel2(),
-        //   ],
-        // ),
-        );
+class MyCarouselPointer extends StatelessWidget {
+  const MyCarouselPointer(
+      {super.key, this.carouselIndex = 0, this.carouselLength = 0});
+
+  final int carouselIndex;
+  final int carouselLength;
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> pointerMaker() {
+      List<Widget> temp = [];
+      for (int i = 0; i < carouselLength; i++) {
+        if (carouselIndex == i) {
+          temp.add(TweenAnimationBuilder(
+              key: UniqueKey(),
+              duration: const Duration(milliseconds: 400),
+              tween: Tween(begin: 0.0, end: 1.0),
+              builder: (context, value, child) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white,
+                  ),
+                  width: 20 + (value * 50),
+                  height: 5,
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                );
+              }));
+        } else {
+          temp.add(TweenAnimationBuilder(
+              key: Key("$i"),
+              duration: const Duration(milliseconds: 400),
+              tween: Tween(begin: 1.0, end: 0.0),
+              builder: (context, value, child) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white.withOpacity((value + .7) / 2),
+                  ),
+                  width: (value * 50) + 20,
+                  height: 5,
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                );
+              }));
+        }
+      }
+      print(temp);
+      return temp;
+    }
+
+    return SizedBox(
+      // ignore: sort_child_properties_last
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: pointerMaker()),
+      // width: 200,
+      height: 50,
+      // color: Colors.green,
+    );
   }
 }

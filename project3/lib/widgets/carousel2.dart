@@ -37,7 +37,7 @@ class _MyCarousel2State extends State<MyCarousel2>
   @override
   void initState() {
     _mainAnimCntrl = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 600));
+        vsync: this, duration: const Duration(milliseconds: 500));
 
     _rotateAnimPhase1 = Tween<double>(begin: 0.0, end: pi / 2).animate(
         CurvedAnimation(
@@ -60,10 +60,11 @@ class _MyCarousel2State extends State<MyCarousel2>
           (String e) => Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
+                border: Border.all(width: 5, color: Colors.white),
                 // color: Colors.pinkAccent,
                 image: DecorationImage(fit: BoxFit.fill, image: AssetImage(e))),
             width: 300,
-            height: 400,
+            height: 450,
             // child: Text(e),
           ),
         )
