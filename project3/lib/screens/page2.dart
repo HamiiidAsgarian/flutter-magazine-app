@@ -118,8 +118,6 @@ class _Page2State extends State<Page2> {
                             child: MyCarousel2(
                               items: widget.selectedItem.moreImages ?? [],
                               onChange: (pageIndex) {
-                                print("* $pageIndex");
-
                                 setState(() {
                                   carouselIndex = pageIndex;
                                   _dynamicBackgroundImage = SizedBox.expand(
@@ -424,7 +422,6 @@ class MyCarouselPointer extends StatelessWidget {
               }));
         }
       }
-      print(temp);
       return temp;
     }
 

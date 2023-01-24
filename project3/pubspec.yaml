@@ -72,6 +72,7 @@ flutter:
     - assets/images/e1.png
     - assets/images/c1.png
 
+    - assets/images/screen2/spider0.png
     - assets/images/screen2/spider1.png
     - assets/images/screen2/spider2.png
     - assets/images/screen2/spider3.png
@@ -144,6 +145,15 @@ flutter:
     - assets/images/home.png
     - assets/images/heart.png
     - assets/images/search.png
+
+
+
+    - assets/images/screen2/batman1.png
+    - assets/images/screen2/batman2.png
+    - assets/images/screen2/batman3.png
+    - assets/images/screen2/batman4.png
+    - assets/images/screen2/batLogo.png
+  
 
 
 

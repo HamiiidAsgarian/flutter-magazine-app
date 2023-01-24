@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:project3/screens/page2.dart';
+
+import '../item_class.dart';
 
 class OtherCharactersSection extends StatelessWidget {
   const OtherCharactersSection({
     Key? key,
+    required this.shapes,
     required this.items,
   }) : super(key: key);
 
-  final List<CustomPaint> items;
+  final List<CustomPaint> shapes;
+  final List<MyCarouselItem> items;
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +59,15 @@ class OtherCharactersSection extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 0),
                 itemExtent: 150,
                 scrollDirection: Axis.horizontal,
-                itemCount: items.length,
+                itemCount: shapes.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      print("object $index");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) =>
+                                  Page2(selectedItem: items[index]))));
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(
@@ -67,7 +76,7 @@ class OtherCharactersSection extends StatelessWidget {
                           // color: Colors.black.withOpacity(.1),
                           width: 150,
                           // height: 100,
-                          child: items[index]),
+                          child: shapes[index]),
                     ),
                   );
                 },

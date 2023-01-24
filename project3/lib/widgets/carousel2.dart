@@ -161,7 +161,6 @@ class _MyCarousel2State extends State<MyCarousel2>
   }
 
   onDrag(MyCardsDragDirection direction) async {
-    print(direction);
     double angle =
         direction == MyCardsDragDirection.left ? (-pi / 2) : (pi / 2);
     double cardsTravelDestence = direction == MyCardsDragDirection.left

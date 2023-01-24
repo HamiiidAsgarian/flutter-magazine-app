@@ -149,14 +149,33 @@ class MyAppbar extends StatelessWidget with PreferredSizeWidget {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                  Text("Hi Hamid,wellcome back"),
-                  SizedBox(
-                    height: 5,
+                    children: [
+                  RichText(
+                    text: const TextSpan(
+                      style: TextStyle(
+                          fontSize: 12.0,
+                          color: Color.fromARGB(255, 51, 51, 51),
+                          fontFamily: "avengers"),
+                      children: <TextSpan>[
+                        TextSpan(text: 'Hi'),
+                        TextSpan(
+                            text: '  Hamiiid  ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "avengers",
+                                fontSize: 15,
+                                color: Colors.black)),
+                        TextSpan(text: 'Wellcome back'),
+                      ],
+                    ),
                   ),
-                  Text(
-                    "last see 11:27",
-                    style: TextStyle(fontSize: 11),
+                  const SizedBox(height: 5),
+                  const Text(
+                    "last see 11:27 AM",
+                    style: TextStyle(
+                        fontSize: 10.0,
+                        color: Color.fromARGB(255, 51, 51, 51),
+                        fontFamily: "avengers"),
                   )
                 ])),
           ])),

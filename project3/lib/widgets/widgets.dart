@@ -9,19 +9,24 @@ import 'package:project3/item_class.dart';
 enum CardsSelectionStatus { selected, unSelected }
 
 class MyCustomCards extends StatefulWidget {
-  const MyCustomCards(
-      {super.key,
+  // ignore: library_private_types_in_public_api
+  static final GlobalKey<_MyCustomCardsState> myCarousleKey =
+      GlobalKey(); //NOTE this is because i want to call [cardOpening] function from the Carousel widget to be more orginized. with this key i access the  [cardOpening] function AFTER pop from the Page2(**push.then**),this might cause unstability so I NOTE this
+
+  MyCustomCards(
+      {
       // this.items = const [],
       this.itemss = const [],
       this.currentIndex,
       this.onTap,
-      this.leftOrRightResult});
+      this.leftOrRightResult})
+      : super(key: myCarousleKey);
 
   // final List<Widget> items;
   final List<MyCarouselItem> itemss;
   final Function(MyCardsDragDirection)? leftOrRightResult;
   final Function(int)? currentIndex;
-  final Function(CardsSelectionStatus)? onTap;
+  final Future Function(CardsSelectionStatus)? onTap;
 
   @override
   State<MyCustomCards> createState() => _MyCustomCardsState();
@@ -51,6 +56,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
   // late List<Widget> _widgetedItems;
 
   late List<MyCarouselItem> _itemsStackCardOrder;
+  final int _cardsDiviationValue = 15;
 
   @override
   void initState() {
@@ -75,12 +81,17 @@ class _MyCustomCardsState extends State<MyCustomCards>
 
     _rotateAnim = Tween<double>(begin: 0, end: 0).animate(
         CurvedAnimation(parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-    _rotateAnim1 = Tween<double>(begin: -(pi / 10), end: 0).animate(
-        CurvedAnimation(parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-    _rotateAnim2 = Tween<double>(begin: (pi / 10), end: -(pi / 10)).animate(
-        CurvedAnimation(parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-    _rotateAnim3 = Tween<double>(begin: 0, end: (pi / 10)).animate(
-        CurvedAnimation(parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+    _rotateAnim1 = Tween<double>(begin: -(pi / _cardsDiviationValue), end: 0)
+        .animate(CurvedAnimation(
+            parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+    _rotateAnim2 = Tween<double>(
+            begin: (pi / _cardsDiviationValue),
+            end: -(pi / _cardsDiviationValue))
+        .animate(CurvedAnimation(
+            parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+    _rotateAnim3 = Tween<double>(begin: 0, end: (pi / _cardsDiviationValue))
+        .animate(CurvedAnimation(
+            parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
 
     _translateAnims = [
       _traslateAnim,
@@ -101,7 +112,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
     //         child: Image.asset(e.backgroundImageUrl ?? ""),
     //       )
 
-    cardOpening(); ////NOTE HOW to open card on init
+    // cardOpening(); ////NOTE HOW to open card on init
 
     super.initState();
   }
@@ -126,7 +137,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
   static const double _skipDistance =
       50; // distance(left ot right) from center of the cart to start skip(next) animation
 
-  int currentIndex = 1;
+  int currentIndex = 0;
   bool _isSelected = false;
 
   @override
@@ -172,20 +183,17 @@ class _MyCustomCardsState extends State<MyCustomCards>
               animation:
                   Listenable.merge([_returnToPositionCntrl, _cardsChangeAnim]),
               builder: (context, child) {
-                return Hero(
-                  tag: "hero1",
-                  child: DynamicCardOnTop(
-                    data: _itemsStackCardOrder[i],
-                    cardWith: _cardWith,
-                    cardHeight: _cardHeight,
-                    dxPosition: _updateDx,
-                    dyPosition: _updateDy,
-                    translateOffset:
-                        _returnToPositionCntrl.status == AnimationStatus.forward
-                            ? _returnToOfssetPositionAnim.value
-                            : Offset(_updateDx, _updateDy),
-                    rotateAngle: _rotateAnim.value,
-                  ),
+                return DynamicCardOnTop(
+                  data: _itemsStackCardOrder[i],
+                  cardWith: _cardWith,
+                  cardHeight: _cardHeight,
+                  dxPosition: _updateDx,
+                  dyPosition: _updateDy,
+                  translateOffset:
+                      _returnToPositionCntrl.status == AnimationStatus.forward
+                          ? _returnToOfssetPositionAnim.value
+                          : Offset(_updateDx, _updateDy),
+                  rotateAngle: _rotateAnim.value,
                 );
               }),
         ));
@@ -236,31 +244,48 @@ class _MyCustomCardsState extends State<MyCustomCards>
   }
 
   onPanEnd() async {
+    // print("ci1 $currentIndex");
     if (_updateDx > _skipDistance) {
       _rotateAnim = Tween<double>(begin: 0, end: pi / 1.5).animate(
           CurvedAnimation(parent: _cardsChangeAnim, curve: Curves.linear));
 
       if (widget.leftOrRightResult != null) {
-        widget.leftOrRightResult!(MyCardsDragDirection.right);
+        widget.leftOrRightResult!(MyCardsDragDirection
+            .right); //For parrent awareness of drag direction only
       }
-      currentIndex = (currentIndex % _itemsStackCardOrder.length) + 1;
-      if (widget.currentIndex != null) {
-        widget.currentIndex!(currentIndex);
+      if (currentIndex < _itemsStackCardOrder.length - 1) {
+        currentIndex++;
+      } else {
+        currentIndex = 0;
       }
+
+      // currentIndex = (currentIndex % _itemsStackCardOrder.length) + 1;
+      // if (widget.currentIndex != null) {
+      widget.currentIndex!(currentIndex);
+      // }
       await _cardsChangeAnim.forward();
     } else if (_updateDx < -_skipDistance) {
       _rotateAnim = Tween<double>(begin: 0, end: -pi / 1.5).animate(
           CurvedAnimation(parent: _cardsChangeAnim, curve: Curves.linear));
 
       if (widget.leftOrRightResult != null) {
-        widget.leftOrRightResult!(MyCardsDragDirection.left);
+        widget.leftOrRightResult!(MyCardsDragDirection
+            .left); //For parrent awareness of drag direction only
       }
-      currentIndex = (currentIndex % _itemsStackCardOrder.length) + 1;
-      if (widget.currentIndex != null) {
-        widget.currentIndex!(currentIndex);
+
+      if (currentIndex < _itemsStackCardOrder.length - 1) {
+        currentIndex++;
+      } else {
+        currentIndex = 0;
       }
+
+      // currentIndex = (currentIndex % _itemsStackCardOrder.length) + 1;
+      // if (widget.currentIndex != null) {
+      widget.currentIndex!(currentIndex);
+      // }
       await _cardsChangeAnim.forward();
     }
+    // print("ci - $currentIndex");
 
     if (_updateDx > _skipDistance || _updateDx < -_skipDistance) {
       // currentIndex = (currentIndex % _items.length) + 1;
@@ -296,17 +321,23 @@ class _MyCustomCardsState extends State<MyCustomCards>
   onTapUp() async {
 //For grouping cards together when they become selected
     if (!_isSelected) {
+      if (widget.onTap != null) {
+        // await cardOpening();
+        // widget.onTap!(CardsSelectionStatus.selected);
+      }
+
       _isSelected = true;
       _cardsChangeAnim.reset();
       setState(() {
         _isSelected = true;
         _rotateAnim = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(
             parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-        _rotateAnim1 = Tween<double>(begin: -(pi / 10), end: 0).animate(
-            CurvedAnimation(
-                parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-        _rotateAnim2 = Tween<double>(begin: (pi / 10), end: 0).animate(
-            CurvedAnimation(
+        _rotateAnim1 =
+            Tween<double>(begin: -(pi / _cardsDiviationValue), end: 0).animate(
+                CurvedAnimation(
+                    parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
+        _rotateAnim2 = Tween<double>(begin: (pi / _cardsDiviationValue), end: 0)
+            .animate(CurvedAnimation(
                 parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
         _rotateAnim3 = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(
             parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
@@ -315,10 +346,20 @@ class _MyCustomCardsState extends State<MyCustomCards>
       _rotateAnims = [_rotateAnim, _rotateAnim1, _rotateAnim2, _rotateAnim3];
 
       await _cardsChangeAnim.forward();
-      if (widget.onTap != null) {
-        await widget.onTap!(CardsSelectionStatus.selected);
-      }
-      await cardOpening();
+      // widget.onTap!(CardsSelectionStatus.selected);
+
+      await widget.onTap!(CardsSelectionStatus.selected);
+
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: ((context) => Page2(
+      //               //
+      //               selectedItem: widget.itemss[currentIndex],
+      //             )))).then((value) {
+      //   print("ci then");
+      //   cardOpening();
+      // });
     } else {
       cardOpening();
     }
@@ -330,14 +371,16 @@ class _MyCustomCardsState extends State<MyCustomCards>
     setState(() {
       _rotateAnim = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(
           parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-      _rotateAnim1 = Tween<double>(begin: -(pi / 10), end: 0).animate(
-          CurvedAnimation(
+      _rotateAnim1 = Tween<double>(begin: -(pi / _cardsDiviationValue), end: 0)
+          .animate(CurvedAnimation(
               parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-      _rotateAnim2 = Tween<double>(begin: (pi / 10), end: -(pi / 10)).animate(
-          CurvedAnimation(
+      _rotateAnim2 = Tween<double>(
+              begin: (pi / _cardsDiviationValue),
+              end: -(pi / _cardsDiviationValue))
+          .animate(CurvedAnimation(
               parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
-      _rotateAnim3 = Tween<double>(begin: 0, end: (pi / 10)).animate(
-          CurvedAnimation(
+      _rotateAnim3 = Tween<double>(begin: 0, end: (pi / _cardsDiviationValue))
+          .animate(CurvedAnimation(
               parent: _cardsChangeAnim, curve: Curves.easeInOutBack));
 
       _rotateAnims = [_rotateAnim, _rotateAnim1, _rotateAnim2, _rotateAnim3];
@@ -446,22 +489,30 @@ class DynamicCardOnTop extends StatelessWidget {
           angle: _rotateAngle,
           child: Stack(children: [
             _data.backgroundImageUrl != ""
-                ? SizedBox(
+                ? Container(
                     // color: Colors.green,
                     width: _cardWith,
                     height: _cardHeight,
-                    child: Image.asset(_data.backgroundImageUrl ?? ""),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(_data.backgroundImageUrl ?? ""))),
+                    // child: Hero(
+                    //     tag: 'hero1',
+                    //     child: Image.asset(_data.backgroundImageUrl ?? "")),
                   )
                 : const SizedBox(),
             // _widgetedItems[i],
             _data.foregroundImageUrl != ""
                 ? Positioned.fill(
-                    child: Center(
-                      child: Transform.translate(
-                          offset: Offset(_updateDx / 4, _updateDy / 4),
-                          child: Center(
-                              child:
-                                  Image.asset(_data.foregroundImageUrl ?? ""))),
+                    child: Hero(
+                      tag: 'hero1',
+                      child: Center(
+                        child: Transform.translate(
+                            offset: Offset(_updateDx / 4, _updateDy / 4),
+                            child: Center(
+                                child: Image.asset(
+                                    _data.foregroundImageUrl ?? ""))),
+                      ),
                     ),
                   )
                 : const SizedBox(),

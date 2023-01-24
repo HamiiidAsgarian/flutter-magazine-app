@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:project3/item_class.dart';
-import 'package:project3/screens/page2.dart';
 import 'package:project3/screens/page_home.dart';
 
 main() {
@@ -17,13 +16,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<MyCarouselItem> carouselsData = [];
-    List<MyListItem> otherHeroesData = [];
+    List<MyCarouselItem> otherHeroesData = [];
 
     for (var e in data['carousels']) {
       carouselsData.add(MyCarouselItem.fromMap(e));
     }
     for (var e in data['otherHeroes']) {
-      otherHeroesData.add(MyListItem.fromMap(e));
+      otherHeroesData.add(MyCarouselItem.fromMap(e));
     }
 
     return MaterialApp(

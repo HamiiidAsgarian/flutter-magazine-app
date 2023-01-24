@@ -11,7 +11,7 @@ class HomeScreen extends StatefulWidget {
       {required this.carouselItems, super.key, required this.otherHeroesItems});
 
   final List<MyCarouselItem> carouselItems;
-  final List<MyListItem> otherHeroesItems;
+  final List<MyCarouselItem> otherHeroesItems;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -46,7 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               const GeanraSection(),
               CarouselSection(cardItems: widget.carouselItems),
-              OtherCharactersSection(items: otherHeroesItems)
+              OtherCharactersSection(
+                  shapes: otherHeroesItems, items: widget.otherHeroesItems)
             ],
           ),
         ),
@@ -55,25 +56,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   otherItemsGenerator() {
+    const Color shapeBorderColor = Colors.black;
+
     for (var i = 0; i < widget.otherHeroesItems.length; i++) {
       if (i == 0) {
         otherHeroesItems.add(customCardGenerator(
-            painter: Shape1(color: Colors.black),
+            painter: Shape1(color: shapeBorderColor),
             clipper: Clip1(),
             imageUrl: widget.otherHeroesItems[i].fullImage));
       } else if ((i + 1) % 3 == 0) {
         otherHeroesItems.add(customCardGenerator(
-            painter: Shape3(color: Colors.black),
+            painter: Shape3(color: shapeBorderColor),
             clipper: Clip3(),
             imageUrl: widget.otherHeroesItems[i].fullImage));
       } else if ((i + 1) % 5 == 0) {
         otherHeroesItems.add(customCardGenerator(
-            painter: Shape5(color: Colors.black),
+            painter: Shape5(color: shapeBorderColor),
             clipper: Clip5(),
             imageUrl: widget.otherHeroesItems[i].fullImage));
       } else if ((i + 1) % 2 == 0) {
         otherHeroesItems.add(customCardGenerator(
-            painter: Shape2(color: Colors.black),
+            painter: Shape2(color: shapeBorderColor),
             clipper: Clip2(),
             imageUrl: widget.otherHeroesItems[i].fullImage));
       }
@@ -141,14 +144,16 @@ class GeanraSection extends StatelessWidget {
                     // padding: EdgeInsets.symmetric(horizontal: 10),
                     height: double.infinity,
                     child: ListView(
-                      itemExtent: 100,
+                      // itemExtent: 90,
                       scrollDirection: Axis.horizontal,
                       children: [
                         'Marvel Comics',
                         "DC Comics",
                         "Anime",
                         "Manga",
-                        "Cartoon"
+                        "Cartoon",
+                        "POK",
+                        "Posor"
                       ]
                           .map((e) => TextButton(
                                 onPressed: (() {}),

@@ -60,7 +60,7 @@ class CarouselSection extends StatelessWidget {
                 ),
               ),
               Align(
-                alignment: const Alignment(.0, -1),
+                alignment: const Alignment(.9, -1),
                 // top: -0,
                 // right: 10,
                 // alignment: Alignment.topLeft,
@@ -69,14 +69,14 @@ class CarouselSection extends StatelessWidget {
                       top: 12.5, bottom: 10, left: 10, right: 10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: const Color.fromARGB(255, 255, 243, 110),
+                      color: const Color.fromARGB(255, 253, 234, 8),
                       border: Border.all(
                           width: 3,
                           color: const Color.fromARGB(255, 22, 22, 22))),
                   // width: 150,
                   // height: 50,
                   child: const Text(
-                    "Today's Heroes",
+                    "Saved Heroes",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 15),
                   ),
@@ -102,47 +102,15 @@ class Carousel1 extends StatefulWidget {
 }
 
 class _Carousel1State extends State<Carousel1> {
-  // static final List myColors = [
-  //   Colors.white.withOpacity(0),
-  //   Colors.white.withOpacity(0),
-  //   Colors.white.withOpacity(0),
-  //   Colors.white.withOpacity(0),
-  //   Colors.white.withOpacity(0),
-  // ];
-
-  // late AnimationController _animCntrl1;
-
-  // late Animation _pageChangeAnim;
-
   @override
   void initState() {
-    // print(widget.items.length);
-    // _animCntrl1 = AnimationController(
-    //     vsync: this, duration: const Duration(milliseconds: 400));
-
-    // _pageChangeAnim = Tween<double>(begin: 0, end: 300)
-    //     .animate(CurvedAnimation(parent: _animCntrl1, curve: Curves.linear));
     super.initState();
   }
 
-  // static const double _cardWith = 400;
-  // static const double _cardHeight = 400;
+  int _currentIndex = 0;
 
-  // bool test = false;
-  int _selectedIndex = 1;
   @override
   Widget build(BuildContext context) {
-    // final List<Widget> widgetedItems = widget.items
-    //     .map(
-    //       (e) => SizedBox(
-    //         // color: myColors[0],
-    //         width: _cardWith,
-    //         height: _cardHeight,
-    //         child: Image.asset(e.backgroundImageUrl ?? ""),
-    //       ),
-    //     )
-    //     .toList();
-
     log("bild");
 
     // print("1- ${widget.items[0].titel}");
@@ -152,22 +120,35 @@ class _Carousel1State extends State<Carousel1> {
         itemss: widget.items,
         currentIndex: (index) {
           setState(() {
-            _selectedIndex = index - 1;
+            _currentIndex = index;
           });
         },
         // items: widgetedItems,
-        onTap: (status) {
-          print(_selectedIndex);
+        onTap: (status) async {
           // await Future.delayed(Duration(seconds: 1));
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) => Page2(
+                        //
+                        selectedItem: widget.items[_currentIndex],
+                      )))).then((value) {
+            MyCustomCards.myCarousleKey.currentState!
+                .cardOpening(); //NOTE i have created a global key inside the [MyCustomCards]  widget to access its methods from here to be more organized, however this might reduce stability
+          });
+          // PageRouteBuilder(
+          //   pageBuilder: ((context, animation, secondaryAnimation) {
+          //     return Page3(
+          //       //
+          //       selectedItem: widget.itemss[currentIndex],
+          //     );
+          //   }),
+          //   transitionDuration: const Duration(milliseconds: 2000),
+          //   reverseTransitionDuration: Duration.zero,
+          // ));
           // Navigator.push(
-          //     context,
-          //     PageRouteBuilder(
-          //       pageBuilder: ((context, animation, secondaryAnimation) {
-          //         return Page2(selectedItem: widget.items[_selectedIndex - 1]);
-          //       }),
-          //       transitionDuration: const Duration(seconds: 1),
-          //       reverseTransitionDuration: Duration.zero,
-          //     )).then((value) {});
+          //     context, MaterialPageRoute(builder: ((context) => Screen3())));
         },
       ),
     );
