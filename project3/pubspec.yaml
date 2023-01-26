@@ -70,7 +70,7 @@ flutter:
     - assets/images/b1.png
     - assets/images/f1.png
     - assets/images/e1.png
-    - assets/images/c1.png
+    # - assets/images/c1.png
 
     - assets/images/screen2/spider0.png
     - assets/images/screen2/spider1.png
@@ -94,7 +94,7 @@ flutter:
 
     - assets/images/b2.png
     - assets/images/f2.png
-    - assets/images/c2.png
+    # - assets/images/c2.png
 
 
 
@@ -102,18 +102,18 @@ flutter:
     - assets/images/b3.png
     - assets/images/f3.png
     - assets/images/e3.png
-    - assets/images/c3.png
+    # - assets/images/c3.png
 
 
     - assets/images/b4.png
     - assets/images/f4.png
     - assets/images/e4.png
-    - assets/images/c4.png
+    # - assets/images/c4.png
 
 
     - assets/images/b5.png
     - assets/images/f5.png
-    - assets/images/c5.png
+    # - assets/images/c5.png
 
     # - assets/t/1.png
     # - assets/t/2.png

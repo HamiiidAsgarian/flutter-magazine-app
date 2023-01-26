@@ -119,40 +119,43 @@ class _MyCarousel2State extends State<MyCarousel2>
         int nextCardIndex = _dragDirection == MyCardsDragDirection.right
             ? rawItems.length - 1
             : 1;
-        return Stack(
-          children: [
-            MyCard2(
-                myConditionAnim1: myConditionAnim1,
-                translateXAnim: _translateXAnimPhase1.value,
-                rotateAnim1: _rotateAnimPhase1.value,
-                child: rawItems[nextCardIndex]),
-            GestureDetector(
-              //Top Card is touch sensetive
-              onHorizontalDragEnd: (e) async {
-                if (e.primaryVelocity! > 0) {
-                  await onDrag(MyCardsDragDirection.left);
-                } else {
-                  await onDrag(MyCardsDragDirection.right);
-                }
-                widget.onChange(currentIndex);
-              },
-              child: MyCard2(
+        return Hero(
+          tag: 'hero1',
+          child: Stack(
+            children: [
+              MyCard2(
                   myConditionAnim1: myConditionAnim1,
-                  translateXAnim: -_translateXAnimPhase1.value,
+                  translateXAnim: _translateXAnimPhase1.value,
                   rotateAnim1: _rotateAnimPhase1.value,
+                  child: rawItems[nextCardIndex]),
+              GestureDetector(
+                //Top Card is touch sensetive
+                onHorizontalDragEnd: (e) async {
+                  if (e.primaryVelocity! > 0) {
+                    await onDrag(MyCardsDragDirection.left);
+                  } else {
+                    await onDrag(MyCardsDragDirection.right);
+                  }
+                  widget.onChange(currentIndex);
+                },
+                child: MyCard2(
+                    myConditionAnim1: myConditionAnim1,
+                    translateXAnim: -_translateXAnimPhase1.value,
+                    rotateAnim1: _rotateAnimPhase1.value,
+                    child: rawItems[0]),
+              ),
+              MyCard2(
+                  myConditionAnim1: myConditionAnim2,
+                  translateXAnim: -_translateXAnimPhase2.value,
+                  rotateAnim1: -_rotateAnimPhase2.value,
                   child: rawItems[0]),
-            ),
-            MyCard2(
-                myConditionAnim1: myConditionAnim2,
-                translateXAnim: -_translateXAnimPhase2.value,
-                rotateAnim1: -_rotateAnimPhase2.value,
-                child: rawItems[0]),
-            MyCard2(
-                myConditionAnim1: myConditionAnim2,
-                translateXAnim: _translateXAnimPhase2.value,
-                rotateAnim1: -_rotateAnimPhase2.value,
-                child: rawItems[nextCardIndex]),
-          ],
+              MyCard2(
+                  myConditionAnim1: myConditionAnim2,
+                  translateXAnim: _translateXAnimPhase2.value,
+                  rotateAnim1: -_rotateAnimPhase2.value,
+                  child: rawItems[nextCardIndex]),
+            ],
+          ),
         );
       }),
     );

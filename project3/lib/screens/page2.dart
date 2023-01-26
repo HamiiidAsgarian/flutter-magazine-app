@@ -113,27 +113,32 @@ class _Page2State extends State<Page2> {
                       child: Container(
                           margin: const EdgeInsets.only(bottom: 70),
                           // width: 20,
-                          child: Hero(
-                            tag: 'hero1',
-                            child: MyCarousel2(
-                              items: widget.selectedItem.moreImages ?? [],
-                              onChange: (pageIndex) {
-                                setState(() {
-                                  carouselIndex = pageIndex;
-                                  _dynamicBackgroundImage = SizedBox.expand(
-                                      key: Key(carouselIndex.toString()),
-                                      child: Image.asset(
-                                        widget.selectedItem
-                                            .moreImages![carouselIndex],
-                                        fit: BoxFit.fill,
-                                      ));
-                                });
-                              },
-                            ),
+                          child: MyCarousel2(
+                            items: widget.selectedItem.moreImages ?? [],
+                            onChange: (pageIndex) {
+                              setState(() {
+                                carouselIndex = pageIndex;
+                                _dynamicBackgroundImage = SizedBox.expand(
+                                    key: Key(carouselIndex.toString()),
+                                    child: Image.asset(
+                                      widget.selectedItem
+                                          .moreImages![carouselIndex],
+                                      fit: BoxFit.fill,
+                                    ));
+                              });
+                            },
                           )),
                     ),
                   ),
                 ),
+                // Align(
+                //   alignment: Alignment.topCenter,
+                //   child: Container(
+                //     color: Colors.pink,
+                //     width: 50,
+                //     height: 50,
+                //   ),
+                // ),
                 Align(
                   alignment: const Alignment(0, .65),
                   child: Container(

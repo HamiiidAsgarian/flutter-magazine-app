@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 253, 234, 8),
-        // bottomNavigationBar: const MyNavbar(),
+        bottomNavigationBar: const MyNavbar(),
         appBar: const MyAppbar(),
         body: Container(
           decoration: const BoxDecoration(
