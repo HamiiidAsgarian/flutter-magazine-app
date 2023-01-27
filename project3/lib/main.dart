@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //////////////////////////////////////////* DATA serialization
     List<MyCarouselItem> carouselsData = [];
     List<MyCarouselItem> otherHeroesData = [];
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
     for (var e in data['otherHeroes']) {
       otherHeroesData.add(MyCarouselItem.fromMap(e));
     }
-
+///////////////////////////////////////////////*
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -35,8 +36,6 @@ class MyApp extends StatelessWidget {
           )),
         ),
         scrollBehavior: MyCustomScrollBehavior(),
-        // home: HomeScreen(
-        //     carouselItems: carouselsData, otherHeroesItems: otherHeroesData),
         home: HomeScreen(
           carouselItems: carouselsData,
           otherHeroesItems: otherHeroesData,
@@ -44,6 +43,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//////////////////////////////////////////////////////////////For mouse enabling on web
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
   // Override behavior methods and getters like dragDevices
   @override

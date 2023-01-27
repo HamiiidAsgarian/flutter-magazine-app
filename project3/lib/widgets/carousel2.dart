@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:project3/widgets/widgets.dart';
+import 'package:project3/widgets/widgets_and_sections.dart';
 
 import 'dart:developer' as developer;
 

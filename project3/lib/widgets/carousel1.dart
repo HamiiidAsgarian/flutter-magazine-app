@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:project3/item_class.dart';
 import 'package:project3/screens/page2.dart';
-import 'package:project3/widgets/widgets.dart';
+import 'package:project3/widgets/widgets_and_sections.dart';
 
 import 'dart:developer';
 
@@ -32,7 +32,7 @@ class CarouselSection extends StatelessWidget {
                   alignment: Alignment.topCenter,
                   child: Transform(
                     transform: Matrix4(
-                      1, -.11, 0, 0.0, //
+                      1, -.11, 0, 0.0, // this is for skew of the section
                       0, 1, 0, 0, //
                       0, 0, 1, 0, //
                       0, 0, 0, 1,
@@ -41,7 +41,7 @@ class CarouselSection extends StatelessWidget {
                       decoration: BoxDecoration(
                           image: const DecorationImage(
                             image: ExactAssetImage(
-                                'assets/images/bb6.png'), //Defult blures background
+                                'assets/images/bb6.png'), //Defult blured background
                             fit: BoxFit.cover,
                           ),
                           border: Border.all(width: 3),
@@ -61,9 +61,6 @@ class CarouselSection extends StatelessWidget {
               ),
               Align(
                 alignment: const Alignment(.9, -1),
-                // top: -0,
-                // right: 10,
-                // alignment: Alignment.topLeft,
                 child: Container(
                   padding: const EdgeInsets.only(
                       top: 12.5, bottom: 10, left: 10, right: 10),
@@ -73,8 +70,6 @@ class CarouselSection extends StatelessWidget {
                       border: Border.all(
                           width: 3,
                           color: const Color.fromARGB(255, 22, 22, 22))),
-                  // width: 150,
-                  // height: 50,
                   child: const Text(
                     "Saved Heroes",
                     textAlign: TextAlign.center,
@@ -114,43 +109,25 @@ class _Carousel1State extends State<Carousel1> {
     log("bild");
 
     // print("1- ${widget.items[0].titel}");
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      child: MyCustomCards(
-        itemss: widget.items,
-        currentIndex: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        // items: widgetedItems,
-        onTap: (status) async {
-          // await Future.delayed(Duration(seconds: 1));
-
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: ((context) => Page2(
-                        //
-                        selectedItem: widget.items[_currentIndex],
-                      )))).then((value) {
-            MyCustomCards.myCarousleKey.currentState!
-                .cardOpening(); //NOTE i have created a global key inside the [MyCustomCards]  widget to access its methods from here to be more organized, however this might reduce stability
-          });
-          // PageRouteBuilder(
-          //   pageBuilder: ((context, animation, secondaryAnimation) {
-          //     return Page3(
-          //       //
-          //       selectedItem: widget.itemss[currentIndex],
-          //     );
-          //   }),
-          //   transitionDuration: const Duration(milliseconds: 2000),
-          //   reverseTransitionDuration: Duration.zero,
-          // ));
-          // Navigator.push(
-          //     context, MaterialPageRoute(builder: ((context) => Screen3())));
-        },
-      ),
+    return MyCustomCards(
+      items: widget.items,
+      currentIndex: (index) {
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+      onTap: (status) async {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: ((context) => Page2(
+                      //
+                      selectedItem: widget.items[_currentIndex],
+                    )))).then((value) {
+          MyCustomCards.myCarousleKey.currentState!
+              .cardOpening(); //NOTE i have created a global key inside the [MyCustomCards]  widget to access its methods from here to be more organized, however this might reduce stability
+        });
+      },
     );
   }
 }

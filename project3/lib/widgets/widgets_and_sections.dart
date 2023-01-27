@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
 import 'package:project3/item_class.dart';
+import 'package:project3/widgets/shapes.dart';
 
 enum CardsSelectionStatus { selected, unSelected }
 
@@ -14,19 +15,16 @@ class MyCustomCards extends StatefulWidget {
       GlobalKey(); //NOTE this is because i want to call [cardOpening] function from the Carousel widget to be more orginized. with this key i access the  [cardOpening] function AFTER pop from the Page2(**push.then**),this might cause unstability so I NOTE this
 
   MyCustomCards(
-      {
-      // this.items = const [],
-      this.itemss = const [],
+      {this.items = const [],
       this.currentIndex,
       this.onTap,
       this.leftOrRightResult})
       : super(key: myCarousleKey);
 
-  // final List<Widget> items;
-  final List<MyCarouselItem> itemss;
+  final List<MyCarouselItem> items;
   final Function(MyCardsDragDirection)? leftOrRightResult;
   final Function(int)? currentIndex;
-  final Future Function(CardsSelectionStatus)? onTap;
+  final Function(CardsSelectionStatus)? onTap;
 
   @override
   State<MyCustomCards> createState() => _MyCustomCardsState();
@@ -103,7 +101,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
 
     // _widgetedItems = widget.items;
 
-    _itemsStackCardOrder = widget.itemss.map((e) => e).toList();
+    _itemsStackCardOrder = widget.items.map((e) => e).toList();
 
     // Container(
     //         // color: myColors[0],
@@ -321,10 +319,10 @@ class _MyCustomCardsState extends State<MyCustomCards>
   onTapUp() async {
 //For grouping cards together when they become selected
     if (!_isSelected) {
-      if (widget.onTap != null) {
-        // await cardOpening();
-        // widget.onTap!(CardsSelectionStatus.selected);
-      }
+      // if (widget.onTap != null) {
+      //   // await cardOpening();
+      //   // widget.onTap!(CardsSelectionStatus.selected);
+      // }
 
       _isSelected = true;
       _cardsChangeAnim.reset();
@@ -346,20 +344,7 @@ class _MyCustomCardsState extends State<MyCustomCards>
       _rotateAnims = [_rotateAnim, _rotateAnim1, _rotateAnim2, _rotateAnim3];
 
       await _cardsChangeAnim.forward();
-      // widget.onTap!(CardsSelectionStatus.selected);
-
-      await widget.onTap!(CardsSelectionStatus.selected);
-
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: ((context) => Page2(
-      //               //
-      //               selectedItem: widget.itemss[currentIndex],
-      //             )))).then((value) {
-      //   print("ci then");
-      //   cardOpening();
-      // });
+      widget.onTap!(CardsSelectionStatus.selected);
     } else {
       cardOpening();
     }
@@ -439,15 +424,7 @@ class DynamicCardNotOnTop extends StatelessWidget {
                       child: Image.asset(_data.topGroundImageUrl ?? ""),
                     )
                   : const SizedBox(),
-            ])
-
-            // SizedBox(
-            //   // color: Colors.green,
-            //   width: _cardWith,
-            //   height: _cardHeight,
-            //   child: Image.asset(_data.fullImage ?? ""),
-            // ),
-            ));
+            ])));
   }
 }
 
@@ -496,12 +473,8 @@ class DynamicCardOnTop extends StatelessWidget {
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(_data.backgroundImageUrl ?? ""))),
-                    // child: Hero(
-                    //     tag: 'hero1',
-                    //     child: Image.asset(_data.backgroundImageUrl ?? "")),
                   )
                 : const SizedBox(),
-            // _widgetedItems[i],
             _data.foregroundImageUrl != ""
                 ? Positioned.fill(
                     child: Hero(
@@ -516,7 +489,6 @@ class DynamicCardOnTop extends StatelessWidget {
                     ),
                   )
                 : const SizedBox(),
-
             _data.topGroundImageUrl != ""
                 ? Positioned.fill(
                     child: Center(
@@ -530,6 +502,59 @@ class DynamicCardOnTop extends StatelessWidget {
                 : const SizedBox(),
           ])),
     );
+  }
+}
+
+class GeanraSection extends StatelessWidget {
+  const GeanraSection({
+    required this.geanras,
+    Key? key,
+  }) : super(key: key);
+  final List<String> geanras;
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+        aspectRatio: 7.1,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          height: 50,
+          width: double.infinity,
+          // color: Colors.green.withOpacity(.1),
+          padding: const EdgeInsets.symmetric(horizontal: 13),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: CustomPaint(
+                  painter: GeanrasShape(color: Colors.pink),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: Transform(
+                  transform: Matrix4(
+                    1, -.07, 0, 0.0, //
+                    0, 1, 0, 0, //
+                    0, 0, 1, 0.01, //
+                    0, 0, 0, 1,
+                  ),
+                  child: Container(
+                    decoration: const BoxDecoration(),
+                    height: double.infinity,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: geanras
+                          .map((e) => TextButton(
+                                onPressed: (() {}),
+                                child: Text(e),
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }
 
