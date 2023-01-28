@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'dart:developer' as developer;
 
-import 'package:project3/item_class.dart';
+import 'package:project3/models/item_class.dart';
 import 'package:project3/widgets/shapes.dart';
 
 enum CardsSelectionStatus { selected, unSelected }

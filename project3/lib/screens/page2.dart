@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project3/item_class.dart';
+import 'package:project3/models/item_class.dart';
 import '../widgets/page2-widgets-and-sections.dart';
 
 class Page2 extends StatelessWidget {

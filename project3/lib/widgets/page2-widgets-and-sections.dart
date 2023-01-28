@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:project3/widgets/shapes.dart';
 
-import '../item_class.dart';
+import '../models/item_class.dart';
 import 'carousel2.dart';
 
 class MyCarouselPointer extends StatelessWidget {

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project3/widgets/carousel1.dart';
-import 'package:project3/item_class.dart';
-import 'package:project3/screens/other_characters.dart';
-import 'package:project3/widgets/shapes.dart';
+import 'package:project3/models/item_class.dart';
 
+import '../widgets/appbar_navbar.dart';
+import '../widgets/other_characters.dart';
 import '../widgets/page1-widgets_and_sections.dart';
-import 'appbar_navbar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen(

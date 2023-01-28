@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project3/screens/page2.dart';
 
-import '../item_class.dart';
+import '../models/item_class.dart';
 import '../widgets/shapes.dart';
 
 class OtherCharactersSection extends StatelessWidget {
