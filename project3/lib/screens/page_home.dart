@@ -4,7 +4,7 @@ import 'package:project3/item_class.dart';
 import 'package:project3/screens/other_characters.dart';
 import 'package:project3/widgets/shapes.dart';
 
-import '../widgets/widgets_and_sections.dart';
+import '../widgets/page1-widgets_and_sections.dart';
 import 'appbar_navbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -64,4 +64,5 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-///Cards are in 4 shapes, first shape is unique, and the rest are created based on dividablility with 3,5 and 2.
+///Cards are in 4 shapes, first shape is unique, and the rest are created based on dividablility with 3,5 and 2. 
+
